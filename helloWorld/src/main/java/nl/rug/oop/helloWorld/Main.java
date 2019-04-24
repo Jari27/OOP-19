@@ -6,7 +6,7 @@ public class Main {
 
 	
 	/**
-	 * A simple program that prints its command line arguments in reverse 
+	 * A simple program that prints its command line arguments in reverse and then gets inputs and remembers the input
 	 */
 	public static void main(String[] args) {
 		for (String argument : args) {
