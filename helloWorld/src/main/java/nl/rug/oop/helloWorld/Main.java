@@ -19,7 +19,7 @@ public class Main {
 			if (mem.canRemember(line))
 				System.out.println("Pffft, everyone knows that!");
 			else {
-				System.out.println("You’re so smart and intelligent!");
+				System.out.println("You're so smart and intelligent!");
 				mem.remember(line);
 			}
 		}
