@@ -1,10 +1,10 @@
+package nl.rug.oop.helloWorld;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.junit.BeforeClass;
-import org.junit.Before;
 import org.junit.After;
 
 import java.io.ByteArrayOutputStream;
