@@ -25,5 +25,5 @@ jobs:
 
       # run tests!
       - run:
-            working_directory: helloWorld
+            working_directory: rpg
             command: mvn integration-test
