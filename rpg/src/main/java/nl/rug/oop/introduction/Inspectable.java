@@ -1,6 +1,8 @@
 package nl.rug.oop.introduction;
 
+import nl.rug.oop.introduction.characters.Player;
+
 public interface Inspectable {
 
-    void inspect();
+    void inspect(Player player);
 }
