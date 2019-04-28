@@ -14,12 +14,28 @@ public class InputHelper {
    * @return the selected action
    */
   public static Action getAction(List<Action> validActions) {
+    if (validActions.size() == 0) {
+      System.err.println("Invalid number of actions!");
+      return null;
+    }
     displayAction(validActions);
     int actionInt = getValidInputInt(validActions.size());
     return validActions.get(actionInt);
   }
 
+  /**
+   * Asks the user to select a GameObject from the list of given objects. Ensures that the user
+   * selects a valid object. Prints an error if the number of object to interact with is 0 and
+   * returns null.
+   *
+   * @param objects the selectable objects
+   * @return the selected object or null if there are no valid objects.
+   */
   public static GameObject getObject(List<GameObject> objects) {
+    if (objects.size() == 0) {
+      System.err.println("Invalid number of objects!");
+      return null;
+    }
     displayObjects(objects);
     int objectInt = getValidInputInt(objects.size());
     return objects.get(objectInt);

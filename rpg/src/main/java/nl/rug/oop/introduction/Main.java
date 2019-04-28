@@ -4,8 +4,6 @@ import nl.rug.oop.introduction.characters.Player;
 
 public class Main {
 
-//    private static List<Action> defaultActions;
-
   private static Player player;
 
   public static void main(String[] args) {
@@ -19,17 +17,20 @@ public class Main {
   }
 
   private static void init() {
-    // setup default actions
-//        defaultActions = new ArrayList<>();
-//        defaultActions.addAll(Arrays.asList(Action.values()));
-//        defaultActions.remove(Action.NEVERMIND);
-    // setup a few rooms
+    // setup a few rooms and doors
     Room r1 = new Room("an old, wooden room");
     Room r2 = new Room("a cheerful, yellow room");
+    Room r3 = new Room(
+        "A grassy field... wait... It's a room painted to look like a grassy field!");
     Door d12 = new Door("a black door");
     d12.setConnectedRooms(r1, r2);
     r1.contents.add(d12);
     r2.contents.add(d12);
+    Door d23 = new Door("a green door");
+    d23.setConnectedRooms(r2, r3);
+    r2.contents.add(d23);
+    r3.contents.add(d23);
+
     // setup the player
     player = new Player("John Doe", r1);
     player.askAndSetName();

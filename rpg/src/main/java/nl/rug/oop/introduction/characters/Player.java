@@ -13,6 +13,9 @@ public class Player {
     this.currentLocation = currentLocation;
   }
 
+  /**
+   * Asks the player his or her name and stores it.
+   */
   public void askAndSetName() {
     this.name = InputHelper.getString("What is your name?");
   }

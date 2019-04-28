@@ -14,6 +14,11 @@ public enum Action {
     this.humanString = humanString;
   }
 
+  /**
+   * Proves a human readable String of the action.
+   *
+   * @return the human readable String
+   */
   public String toHumanString() {
     return this.humanString;
   }

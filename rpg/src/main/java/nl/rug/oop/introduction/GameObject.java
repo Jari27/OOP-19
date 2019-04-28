@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.List;
 import nl.rug.oop.introduction.characters.Player;
 
+/**
+ * A generic class that describes objects that can interacted with in the game. This includes (for
+ * example) locations and NPCs.
+ */
 public abstract class GameObject {
 
   protected List<Action> defaultActions;
@@ -41,5 +45,12 @@ public abstract class GameObject {
     this.defaultActions = defaultActions;
   }
 
+  /**
+   * Executes the selected <code>Action</code>. Developers have to override this with a valid
+   * implementation of all available actions.
+   *
+   * @param a the action to execute
+   * @param player the player object
+   */
   public abstract void doAction(Action a, Player player);
 }

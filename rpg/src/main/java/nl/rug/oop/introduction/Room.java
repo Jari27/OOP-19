@@ -14,9 +14,15 @@ public class Room extends GameObject implements Inspectable, Interactable {
     this.contents.addAll(Arrays.asList(contents));
   }
 
+  /**
+   * Inspects the contents of the room and allows the player to select an object for further
+   * interaction. Further (inter)actions are handled by the selected object.
+   *
+   * @param player the player object
+   */
   @Override
   public void inspect(Player player) {
-//    System.out.println("You are in " + getDescription().toLowerCase() + ".");
+    System.out.println("You are in " + getDescription().toLowerCase() + ".");
     if (this.contents.size() > 0) {
 
       GameObject object = InputHelper.getObject(contents);
