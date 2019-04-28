@@ -1,5 +1,6 @@
 package nl.rug.oop.introduction;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -56,6 +57,7 @@ public class InputHelper {
    */
   private static void displayAction(List<Action> validActions) {
     System.out.println("What action do you take?");
+    Collections.sort(validActions);
     for (int i = 0; i < validActions.size(); i++) {
       System.out.println(" (" + i + ") " + validActions.get(i).toHumanString());
     }
