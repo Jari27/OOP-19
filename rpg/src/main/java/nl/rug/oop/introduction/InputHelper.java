@@ -1,5 +1,7 @@
 package nl.rug.oop.introduction;
 
+import nl.rug.oop.introduction.characters.NPC;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
@@ -45,7 +47,13 @@ public class InputHelper {
   private static void displayObjects(List<GameObject> objects) {
     System.out.println("You see the following: ");
     for (int i = 0; i < objects.size(); i++) {
-      System.out.println(" (" + i + ") " + objects.get(i).getDescription());
+        GameObject object = objects.get(i);
+        if (object instanceof NPC) {
+            NPC npc = (NPC) object;
+            System.out.println(" (" + i + ") " + npc.getName());
+        } else {
+            System.out.println(" (" + i + ") " + objects.get(i).getDescription());
+        }
     }
   }
 
@@ -94,4 +102,8 @@ public class InputHelper {
     System.out.println(s);
     return scanner.nextLine();
   }
+
+    public static String getString() {
+        return scanner.nextLine();
+    }
 }

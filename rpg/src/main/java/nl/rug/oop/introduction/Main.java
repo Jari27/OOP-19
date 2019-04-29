@@ -1,5 +1,6 @@
 package nl.rug.oop.introduction;
 
+import nl.rug.oop.introduction.characters.NPC;
 import nl.rug.oop.introduction.characters.Player;
 
 public class Main {
@@ -30,6 +31,9 @@ public class Main {
     d23.setConnectedRooms(r2, r3);
     r2.contents.add(d23);
     r3.contents.add(d23);
+
+    NPC npc1 = new NPC("Warner", "An econometrics student!!");
+    r2.contents.add(npc1);
 
     // setup the player
     player = new Player("John Doe", r1);

@@ -3,6 +3,8 @@ package nl.rug.oop.introduction;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import nl.rug.oop.introduction.characters.NPC;
 import nl.rug.oop.introduction.characters.Player;
 
 public class Room extends GameObject implements Inspectable, Interactable {
@@ -26,7 +28,13 @@ public class Room extends GameObject implements Inspectable, Interactable {
     if (this.contents.size() > 0) {
 
       GameObject object = InputHelper.getObject(contents);
-      System.out.println("You have selected: " + object.getDescription());
+      // display name for NPCs, descriptions for other objects
+        String objectString = object.getDescription();
+        if (object instanceof NPC) {
+            NPC npc = (NPC) object;
+            objectString = npc.getName();
+        }
+      System.out.println("You have selected: " + objectString);
       Action a = InputHelper.getAction(object.getDefaultActions());
       object.doAction(a, player);
 
