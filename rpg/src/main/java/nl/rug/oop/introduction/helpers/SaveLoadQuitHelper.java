@@ -1,6 +1,6 @@
-package nl.rug.oop.introduction;
+package nl.rug.oop.introduction.helpers;
 
-public class SaveLoadQuitHandler {
+public class SaveLoadQuitHelper {
 
   public static void handleQuit() {
     System.out.println("Are you sure you want to exit?");

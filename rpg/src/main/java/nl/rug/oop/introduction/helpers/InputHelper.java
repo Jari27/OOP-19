@@ -1,5 +1,7 @@
-package nl.rug.oop.introduction;
+package nl.rug.oop.introduction.helpers;
 
+import nl.rug.oop.introduction.Action;
+import nl.rug.oop.introduction.objects.GameObject;
 import nl.rug.oop.introduction.characters.NPC;
 
 import java.util.Collections;

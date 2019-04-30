@@ -2,6 +2,9 @@ package nl.rug.oop.introduction;
 
 import nl.rug.oop.introduction.characters.NPC;
 import nl.rug.oop.introduction.characters.Player;
+import nl.rug.oop.introduction.helpers.InputHelper;
+import nl.rug.oop.introduction.objects.Door;
+import nl.rug.oop.introduction.objects.Room;
 
 public class Main {
 
@@ -25,15 +28,15 @@ public class Main {
         "A grassy field... wait... It's a room painted to look like a grassy field!");
     Door d12 = new Door("a black door");
     d12.setConnectedRooms(r1, r2);
-    r1.contents.add(d12);
-    r2.contents.add(d12);
+    r1.getContents().add(d12);
+    r2.getContents().add(d12);
     Door d23 = new Door("a green door");
     d23.setConnectedRooms(r2, r3);
-    r2.contents.add(d23);
-    r3.contents.add(d23);
+    r2.getContents().add(d23);
+    r3.getContents().add(d23);
 
     NPC npc1 = new NPC("Warner", "An econometrics student!!");
-    r2.contents.add(npc1);
+    r2.getContents().add(npc1);
 
     // setup the player
     player = new Player("John Doe", r1);

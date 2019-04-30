@@ -1,4 +1,4 @@
-package nl.rug.oop.introduction;
+package nl.rug.oop.introduction.interfaces;
 
 import nl.rug.oop.introduction.characters.Player;
 

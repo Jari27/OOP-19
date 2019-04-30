@@ -1,6 +1,9 @@
-package nl.rug.oop.introduction;
+package nl.rug.oop.introduction.objects;
 
+import nl.rug.oop.introduction.Action;
+import nl.rug.oop.introduction.interfaces.Interactable;
 import nl.rug.oop.introduction.characters.Player;
+import nl.rug.oop.introduction.helpers.SaveLoadQuitHelper;
 
 public class Door extends GameObject implements Interactable {
 
@@ -23,7 +26,7 @@ public class Door extends GameObject implements Interactable {
         System.out.println("You back off...");
         break;
       case QUIT:
-        SaveLoadQuitHandler.handleQuit();
+        SaveLoadQuitHelper.handleQuit();
         break;
       default:
         System.err.println("Invalid action...");

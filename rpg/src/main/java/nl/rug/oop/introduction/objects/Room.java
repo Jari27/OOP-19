@@ -1,15 +1,20 @@
-package nl.rug.oop.introduction;
+package nl.rug.oop.introduction.objects;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import nl.rug.oop.introduction.Action;
+import nl.rug.oop.introduction.interfaces.Inspectable;
+import nl.rug.oop.introduction.interfaces.Interactable;
 import nl.rug.oop.introduction.characters.NPC;
 import nl.rug.oop.introduction.characters.Player;
+import nl.rug.oop.introduction.helpers.InputHelper;
+import nl.rug.oop.introduction.helpers.SaveLoadQuitHelper;
 
 public class Room extends GameObject implements Inspectable, Interactable {
 
-  List<GameObject> contents = new ArrayList<>();
+  private List<GameObject> contents = new ArrayList<>();
 
   public Room(String description, GameObject... contents) {
     super(description);
@@ -60,8 +65,12 @@ public class Room extends GameObject implements Inspectable, Interactable {
         interact(player);
         break;
       case QUIT:
-        SaveLoadQuitHandler.handleQuit();
+        SaveLoadQuitHelper.handleQuit();
         break;
     }
+  }
+
+  public List<GameObject> getContents() {
+    return contents;
   }
 }

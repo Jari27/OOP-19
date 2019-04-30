@@ -1,6 +1,11 @@
 package nl.rug.oop.introduction.characters;
 
 import nl.rug.oop.introduction.*;
+import nl.rug.oop.introduction.helpers.InputHelper;
+import nl.rug.oop.introduction.helpers.SaveLoadQuitHelper;
+import nl.rug.oop.introduction.interfaces.Inspectable;
+import nl.rug.oop.introduction.interfaces.Interactable;
+import nl.rug.oop.introduction.objects.GameObject;
 
 public class NPC extends GameObject implements Interactable, Inspectable {
 
@@ -45,7 +50,7 @@ public class NPC extends GameObject implements Interactable, Inspectable {
                 interact(player);
                 break;
             case QUIT:
-                SaveLoadQuitHandler.handleQuit();
+                SaveLoadQuitHelper.handleQuit();
                 break;
 
             default:

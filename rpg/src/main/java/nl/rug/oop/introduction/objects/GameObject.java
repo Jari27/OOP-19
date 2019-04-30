@@ -1,8 +1,11 @@
-package nl.rug.oop.introduction;
+package nl.rug.oop.introduction.objects;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import nl.rug.oop.introduction.Action;
+import nl.rug.oop.introduction.interfaces.Inspectable;
+import nl.rug.oop.introduction.interfaces.Interactable;
 import nl.rug.oop.introduction.characters.Player;
 
 /**
@@ -11,10 +14,10 @@ import nl.rug.oop.introduction.characters.Player;
  */
 public abstract class GameObject {
 
-  protected List<Action> defaultActions;
+  private List<Action> defaultActions;
   private String description;
 
-  public GameObject(String description) {
+  protected GameObject(String description) {
     this.description = description;
     this.defaultActions = new ArrayList<>();
     defaultActions.add(Action.DO_NOTHING);
@@ -48,9 +51,8 @@ public abstract class GameObject {
   /**
    * Executes the selected <code>Action</code>. Developers have to override this with a valid
    * implementation of all available actions.
-   *
-   * @param a the action to execute
+   *  @param a the action to execute
    * @param player the player object
    */
-  public abstract void doAction(Action a, Player player);
+  protected abstract void doAction(Action a, Player player);
 }

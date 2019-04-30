@@ -1,7 +1,7 @@
 package nl.rug.oop.introduction.characters;
 
-import nl.rug.oop.introduction.InputHelper;
-import nl.rug.oop.introduction.Room;
+import nl.rug.oop.introduction.helpers.InputHelper;
+import nl.rug.oop.introduction.objects.Room;
 
 public class Player {
 
