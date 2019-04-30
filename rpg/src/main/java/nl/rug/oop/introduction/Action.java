@@ -2,7 +2,7 @@ package nl.rug.oop.introduction;
 
 public enum Action {
   DO_NOTHING("Do nothing"),
-  INSPECT("Take a closer look"),
+  INSPECT("Take a look"),
   INTERACT("Interact"),
   NEVERMIND("Nevermind"),
   QUIT("Quit game");

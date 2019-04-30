@@ -1,7 +1,6 @@
 package nl.rug.oop.introduction;
 
-import nl.rug.oop.introduction.characters.NPC;
-import nl.rug.oop.introduction.characters.Player;
+import nl.rug.oop.introduction.characters.*;
 import nl.rug.oop.introduction.helpers.InputHelper;
 import nl.rug.oop.introduction.objects.Door;
 import nl.rug.oop.introduction.objects.Room;
@@ -35,8 +34,12 @@ public class Main {
     r2.getContents().add(d23);
     r3.getContents().add(d23);
 
-    NPC npc1 = new NPC("Warner", "An econometrics student!!");
-    r2.getContents().add(npc1);
+    NPC npc1 = new StrangeNPC("Warner", "An econometrics student!!");
+    NPC npc2 = new FriendlyNPC("Michiel", "A big fat gypsy man");
+    NPC npc3 = new AggressiveNPC("Frans", "A small and ugly senior");
+    r1.getContents().add(npc2);
+    r2.getContents().add(npc3);
+    r3.getContents().add(npc1);
 
     // setup the player
     player = new Player("John Doe", r1);
