@@ -40,6 +40,7 @@ public class TalkingDoor extends Door {
 
     /**
      * Returns the current <code>List</code> of possible whispers
+     *
      * @return the list of whispers.
      */
     public List<String> getWhispers() {

@@ -8,13 +8,14 @@ public class FriendlyNPC extends NPC {
     }
 
     @Override
-    public void inspect(Player player){
+    public void inspect(Player player) {
         super.inspect(player);
-        System.out.println(getName() + " says: hey " + player.getName() + " come closer!");
+        System.out.println(getName() + " says: 'Hey " + player.getName() + " come closer!'");
+        System.out.println("You wonder how he knows your name...");
     }
 
     @Override
-    public void interact(Player player){
+    public void interact(Player player) {
         super.interact(player);
         System.out.println(getName() + " says: 'Hello, how are you??'");
         String answer = InputHelper.getString();
