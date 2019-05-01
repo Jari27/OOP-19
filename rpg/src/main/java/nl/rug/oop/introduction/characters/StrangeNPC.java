@@ -16,12 +16,13 @@ public class StrangeNPC extends NPC{
     @Override
     public void interact(Player player){
         super.interact(player);
-        System.out.println(getName() + " asks: can you help me find the birds?");
+        System.out.println(getName() + " asks: can you help me find birds?");
         String answer = InputHelper.getString();
-        if(answer.toLowerCase().contains("nothing") || answer.toLowerCase().contains("nevermind")){
-            System.out.println(getName() + " yells: Ok, move your ass away from me");
+        if(answer.toLowerCase().contains("no") || answer.toLowerCase().contains("not")){
+            System.out.println(getName() + " yells: why am I such an idiot?!");
         } else{
-            System.out.println(getName() + " screams: I have my own problems, stop bothering me with yours");
+            System.out.println(getName() + " does not respond");
         }
+        System.out.println("You move away slowly..");
     }
 }
