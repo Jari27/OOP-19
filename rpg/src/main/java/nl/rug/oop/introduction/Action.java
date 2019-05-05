@@ -5,7 +5,13 @@ public enum Action {
     INSPECT("Take a look"),
     INTERACT("Interact"),
     NEVERMIND("Nevermind"),
-    QUIT("Quit game");
+    QUIT("Quit game"),
+    NEW("Start a new game"),
+    SAVE("Save a game"),
+    LOAD("Load a game"),
+    QUICKSAVE("Quicksave"),
+    QUICKLOAD("Quickload");
+
     // TODO add new actions when applicable
 
     private String humanString;

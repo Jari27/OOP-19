@@ -1,5 +1,6 @@
 package nl.rug.oop.introduction.objects;
 
+import java.io.Serializable;
 import nl.rug.oop.introduction.Action;
 import nl.rug.oop.introduction.characters.Player;
 import nl.rug.oop.introduction.interfaces.Inspectable;
@@ -13,7 +14,9 @@ import java.util.List;
  * A generic class that describes objects that can interacted with in the game. This includes (for
  * example) locations and NPCs.
  */
-public abstract class GameObject {
+public abstract class GameObject implements Serializable {
+
+    private static final long serialVersionUID = -1376398647209746336L;
 
     private List<Action> defaultActions;
     private String description;

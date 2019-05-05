@@ -2,29 +2,64 @@ package nl.rug.oop.introduction;
 
 import nl.rug.oop.introduction.characters.*;
 import nl.rug.oop.introduction.helpers.InputHelper;
+import nl.rug.oop.introduction.helpers.SaveLoadQuitHelper;
 import nl.rug.oop.introduction.objects.Door;
 import nl.rug.oop.introduction.objects.Room;
 import nl.rug.oop.introduction.objects.TalkingDoor;
 
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class Main {
 
-    private static Player player;
+
+    private static GameSession session;
+
 
     public static void main(String[] args) {
         init();
         while (true) {
-            System.out.println("You are in " + player.getLocation().getDescription().toLowerCase());
-            Action a = InputHelper.getAction(player.getLocation().getDefaultActions());
-            player.getLocation().doAction(a, player);
+            session.doRound();
         }
     }
 
     private static void init() {
-        // setup a few rooms and doors
+        List<Action> actions = new ArrayList<>();
+        actions.addAll(Arrays.asList(Action.NEW, Action.LOAD, Action.QUICKLOAD));
+        Action a = InputHelper.getAction(actions);
+        switch (a) {
+            case NEW:
+                startNewGame();
+                break;
+            case LOAD:
+                SaveLoadQuitHelper.load();
+                break;
+            case QUICKLOAD:
+                SaveLoadQuitHelper.quickLoad();
+                break;
+            default:
+                System.err.println("Invalid choice...");
+        }
+    }
+
+
+    /**
+     * Starts a new game with some default rooms and npcs.
+     */
+    private static void startNewGame() {
+        System.out.println("Starting a new game!");
+        // setup a few rooms
         Room r1 = new Room("an old, wooden room");
         Room r2 = new Room("a cheerful, yellow room");
         Room r3 = new Room(
                 "A grassy field... wait... It's a room painted to look like a grassy field!");
+
+        List<Room> map = new ArrayList<>();
+        map.addAll(Arrays.asList(r1, r2, r3));
+
+        // setup some doors
         Door d12 = new Door("a black door");
         d12.setConnectedRooms(r1, r2);
         r1.getContents().add(d12);
@@ -47,9 +82,21 @@ public class Main {
         r3.getContents().add(npc1);
 
         // setup the player
-        player = new Player("John Doe", r1);
+        Player player = new Player("John Doe", r1);
         player.askAndSetName();
         System.out.println("Welcome, " + player.getName());
 
+        // start the session
+        setSession(new GameSession(player, map));
+
+    }
+
+    /**
+     * Sets the game session
+     *
+     * @param session the (loaded) session
+     */
+    public static void setSession(GameSession session) {
+        Main.session = session;
     }
 }
