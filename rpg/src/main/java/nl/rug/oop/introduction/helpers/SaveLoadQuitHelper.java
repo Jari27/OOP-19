@@ -60,8 +60,7 @@ public class SaveLoadQuitHelper {
         // (actually does not need the check, since mkdir returns false if the directory already exists)
         File directory = new File(DIRECTORY);
         if (!directory.exists()) {
-            System.out.println("Created directory");
-            directory.mkdir();
+            directory.mkdirs();
         }
         try {
             FileOutputStream fileOut = new FileOutputStream(DIRECTORY + filename);
