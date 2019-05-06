@@ -10,7 +10,7 @@ import java.util.List;
 public class SaveLoadQuitHelper {
 
     private static final String QUICKSAVE_FILENAME = "quicksave.ser";
-    private static final String DIRECTORY = File.separatorChar + "saves" + File.separatorChar;
+    private static final String DIRECTORY = "saves" + File.separatorChar;
 
     /**
      * Asks the player for confirmation before exiting the game.
