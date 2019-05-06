@@ -31,6 +31,10 @@ public class SaveLoadQuitHelper {
     public static void save(GameSession session) {
         // get a save name
         String saveName = InputHelper.getString("Enter a name for your save:");
+        if(saveName.contains("/")){
+            System.out.println("Filename can not contain the character '/'");
+            save(session);
+        }
         // verify that we do not have a save called that already
         File directory = new File(DIRECTORY);
         if (directory.exists() && directory.isDirectory()) {
