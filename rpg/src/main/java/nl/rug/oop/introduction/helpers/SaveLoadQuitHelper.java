@@ -60,6 +60,7 @@ public class SaveLoadQuitHelper {
         // (actually does not need the check, since mkdir returns false if the directory already exists)
         File directory = new File(DIRECTORY);
         if (!directory.exists()) {
+            System.out.println("Created directory");
             directory.mkdir();
         }
         try {
@@ -79,8 +80,9 @@ public class SaveLoadQuitHelper {
         if (canLoadFile(QUICKSAVE_FILENAME)) {
             GameSession session = doLoad(QUICKSAVE_FILENAME);
             Main.setSession(session);
+        } else {
+            System.out.println("No quicksave available.");
         }
-        System.out.println("No quicksave available.");
     }
 
     private static boolean canLoadFile(String filename) {

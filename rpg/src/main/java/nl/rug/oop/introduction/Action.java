@@ -5,12 +5,12 @@ public enum Action {
     INSPECT("Take a look"),
     INTERACT("Interact"),
     NEVERMIND("Nevermind"),
-    QUIT("Quit game"),
     NEW("Start a new game"),
     SAVE("Save a game"),
     LOAD("Load a game"),
     QUICKSAVE("Quicksave"),
-    QUICKLOAD("Quickload");
+    QUICKLOAD("Quickload"),
+    QUIT("Quit game");
 
     // TODO add new actions when applicable
 
