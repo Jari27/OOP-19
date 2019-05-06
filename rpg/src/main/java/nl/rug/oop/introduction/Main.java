@@ -19,15 +19,17 @@ public class Main {
 
 
     public static void main(String[] args) {
-        init();
+        System.out.println(System.getProperty("user.dir"));
+        while (session == null) {
+            init();
+        }
         while (true) {
             session.doRound();
         }
     }
 
     private static void init() {
-        List<Action> actions = new ArrayList<>();
-        actions.addAll(Arrays.asList(Action.NEW, Action.LOAD, Action.QUICKLOAD));
+        List<Action> actions = Arrays.asList(Action.NEW, Action.LOAD, Action.QUICKLOAD);
         Action a = InputHelper.getAction(actions);
         switch (a) {
             case NEW:
@@ -98,5 +100,14 @@ public class Main {
      */
     public static void setSession(GameSession session) {
         Main.session = session;
+    }
+
+    /**
+     * Gets the game session
+     *
+     * @return the current game session
+     */
+    public static GameSession getSession() {
+        return session;
     }
 }

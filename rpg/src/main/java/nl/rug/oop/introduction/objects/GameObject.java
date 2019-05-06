@@ -5,6 +5,7 @@ import nl.rug.oop.introduction.Action;
 import nl.rug.oop.introduction.characters.Player;
 import nl.rug.oop.introduction.interfaces.Inspectable;
 import nl.rug.oop.introduction.interfaces.Interactable;
+import nl.rug.oop.introduction.interfaces.Saveable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +17,7 @@ import java.util.List;
  */
 public abstract class GameObject implements Serializable {
 
-    private static final long serialVersionUID = -1376398647209746336L;
+    private static final long serialVersionUID = 1L;
 
     private List<Action> defaultActions;
     private String description;
@@ -31,6 +32,12 @@ public abstract class GameObject implements Serializable {
         }
         if (this instanceof Inspectable) {
             defaultActions.add(Action.INSPECT);
+        }
+        if (this instanceof Saveable) {
+            defaultActions.add(Action.QUICKSAVE);
+            defaultActions.add(Action.SAVE);
+            defaultActions.add(Action.LOAD);
+            defaultActions.add(Action.QUICKLOAD);
         }
 
         Collections.sort(defaultActions);

@@ -1,18 +1,20 @@
 package nl.rug.oop.introduction.objects;
 
 import nl.rug.oop.introduction.Action;
+import nl.rug.oop.introduction.Main;
 import nl.rug.oop.introduction.characters.NPC;
 import nl.rug.oop.introduction.characters.Player;
 import nl.rug.oop.introduction.helpers.InputHelper;
 import nl.rug.oop.introduction.helpers.SaveLoadQuitHelper;
 import nl.rug.oop.introduction.interfaces.Inspectable;
 import nl.rug.oop.introduction.interfaces.Interactable;
+import nl.rug.oop.introduction.interfaces.Saveable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Room extends GameObject implements Inspectable, Interactable {
+public class Room extends GameObject implements Inspectable, Interactable, Saveable {
 
     private List<GameObject> contents = new ArrayList<>();
 
@@ -66,6 +68,18 @@ public class Room extends GameObject implements Inspectable, Interactable {
                 break;
             case QUIT:
                 SaveLoadQuitHelper.handleQuit();
+                break;
+            case SAVE:
+                SaveLoadQuitHelper.save(Main.getSession());
+                break;
+            case LOAD:
+                SaveLoadQuitHelper.load();
+                break;
+            case QUICKSAVE:
+                SaveLoadQuitHelper.quickSave(Main.getSession());
+                break;
+            case QUICKLOAD:
+                SaveLoadQuitHelper.quickLoad();
                 break;
         }
     }

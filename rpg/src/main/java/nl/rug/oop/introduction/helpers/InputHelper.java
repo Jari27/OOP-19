@@ -80,7 +80,7 @@ public class InputHelper {
      * @param numOptions the number of action the user can select from
      * @return the selected action
      */
-    private static int getValidInputInt(int numOptions) {
+    public static int getValidInputInt(int numOptions) {
         String result;
         int resultInt = -1;
         boolean hasValidInput = true; // to prevent the error message from showing up on the first round

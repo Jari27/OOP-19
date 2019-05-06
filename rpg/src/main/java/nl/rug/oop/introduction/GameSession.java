@@ -8,9 +8,11 @@ import java.io.Serializable;
 import java.util.List;
 
 public class GameSession implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private Player player;
     private List<Room> map;
-    // TODO: Define a UID
 
     public GameSession(Player player, List<Room> map) {
         this.player = player;

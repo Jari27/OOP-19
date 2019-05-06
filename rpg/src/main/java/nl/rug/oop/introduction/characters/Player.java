@@ -3,7 +3,11 @@ package nl.rug.oop.introduction.characters;
 import nl.rug.oop.introduction.helpers.InputHelper;
 import nl.rug.oop.introduction.objects.Room;
 
-public class Player {
+import java.io.Serializable;
+
+public class Player implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Room currentLocation;
     private String name;

@@ -1,8 +1,10 @@
 package nl.rug.oop.introduction.helpers;
 
 import nl.rug.oop.introduction.GameSession;
+import nl.rug.oop.introduction.Main;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.List;
 
 public class SaveLoadQuitHelper {
@@ -73,25 +75,64 @@ public class SaveLoadQuitHelper {
         }
     }
 
-    public static void quickLoad(GameSession session) {
-        load(QUICKSAVE_FILENAME);
+    public static void quickLoad() {
+        if (canLoadFile(QUICKSAVE_FILENAME)) {
+            GameSession session = doLoad(QUICKSAVE_FILENAME);
+            Main.setSession(session);
+        }
+        System.out.println("No quicksave available.");
+    }
+
+    private static boolean canLoadFile(String filename) {
+        File dir = new File(DIRECTORY);
+        if (dir.isDirectory()) { // also checks existence
+            File saveFile = new File(DIRECTORY + filename);
+            return saveFile.exists() && saveFile.canRead();
+        }
+        return false;
+    }
+
+    public static void load() {
+        String filename = selectFileFromSaveFolder();
+        if (filename != null) {
+            GameSession session = doLoad(filename);
+            Main.setSession(session);
+        }
     }
 
 
-    private static String selectFileFromSaveFolder(List<File> filelist) {
+    private static String selectFileFromSaveFolder() {
+        File dir = new File(DIRECTORY);
+        if (dir.isDirectory()) {
+            String[] fileStrings = dir.list();
+            if (fileStrings != null && fileStrings.length > 0) {
+                for (int i = 0; i < fileStrings.length; i++) {
+                    System.out.println(" (" + i + ") " + fileStrings[i]);
+                }
+                int input = InputHelper.getValidInputInt(fileStrings.length);
+                String filename = fileStrings[input];
+                if (filename.endsWith(".ser")) {
+                    return filename;
+                } else {
+                    System.out.println("That is not a valid savefile");
+                    return null;
+                }
 
-    }
-
-    private static GameSession load(String filename) {
-        // create the directory if it does not exist
-        GameSession session;
-        File directory = new File(DIRECTORY);
-        if (!directory.exists()) {
-            System.out.println("There is no file saved file, start a new game.");
+            } else {
+                System.out.println("Could not read files or no savefiles available.");
+                return null;
+            }
+        } else {
+            System.out.println("No savefiles available.");
             return null;
         }
+    }
+
+    private static GameSession doLoad(String filename) {
+        // create the directory if it does not exist
+        GameSession session;
         try {
-            FileInputStream fileIn = new FileInputStream(DIRECTORY + filename);
+            FileInputStream fileIn = new FileInputStream(new File(DIRECTORY + filename));
             ObjectInputStream in = new ObjectInputStream(fileIn);
             session = (GameSession) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
@@ -100,5 +141,4 @@ public class SaveLoadQuitHelper {
         }
         return session;
     }
-
 }
