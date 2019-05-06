@@ -2,10 +2,8 @@ package nl.rug.oop.introduction.helpers;
 
 import nl.rug.oop.introduction.GameSession;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.util.List;
 
 public class SaveLoadQuitHelper {
 
@@ -73,6 +71,34 @@ public class SaveLoadQuitHelper {
             System.err.println("There was a problem saving your file. Detailed information printed below.");
             i.printStackTrace();
         }
+    }
+
+    public static void quickLoad(GameSession session) {
+        load(QUICKSAVE_FILENAME);
+    }
+
+
+    private static String selectFileFromSaveFolder(List<File> filelist) {
+
+    }
+
+    private static GameSession load(String filename) {
+        // create the directory if it does not exist
+        GameSession session;
+        File directory = new File(DIRECTORY);
+        if (!directory.exists()) {
+            System.out.println("There is no file saved file, start a new game.");
+            return null;
+        }
+        try {
+            FileInputStream fileIn = new FileInputStream(DIRECTORY + filename);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            session = (GameSession) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Could not load your game");
+            return null;
+        }
+        return session;
     }
 
 }

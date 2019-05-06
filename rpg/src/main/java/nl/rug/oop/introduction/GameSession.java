@@ -10,6 +10,7 @@ import java.util.List;
 public class GameSession implements Serializable {
     private Player player;
     private List<Room> map;
+    // TODO: Define a UID
 
     public GameSession(Player player, List<Room> map) {
         this.player = player;
