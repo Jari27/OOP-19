@@ -16,7 +16,9 @@ public class Main {
         frame.setJMenuBar(new ButtonBar(game));
         GamePanel panel = new GamePanel(game);
         frame.getContentPane().add(panel);
-        frame.setPreferredSize(new Dimension(800, 600));
+
+        frame.setPreferredSize(new Dimension(1600, 900));
+//        frame.setResizable(false);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
