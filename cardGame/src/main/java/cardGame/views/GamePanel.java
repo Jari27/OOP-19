@@ -15,7 +15,7 @@ public class GamePanel extends JPanel implements Observer {
     private static final int CARDS_ON_FIRST_ROW = 7;
     private static final int CARDS_ON_SECOND_ROW = 6;
 
-    Game game;
+    private Game game;
 
     public GamePanel(Game game) {
         this.game = game;
@@ -26,19 +26,16 @@ public class GamePanel extends JPanel implements Observer {
     }
 
     private Dimension getCardDimension() {
-        // TODO bij sommige groottes werkt dit nog niet (heel breed maar niet hoog)
         double maxWidth = Math.max(0, (getWidth() - (CARDS_ON_FIRST_ROW + 1) * MIN_MARGIN_X) / (double) CARDS_ON_FIRST_ROW);
         double maxHeight = Math.max(0, (getHeight() - 3 * MIN_MARGIN_Y) / (double) 2);
-        System.out.println("Before: " + maxWidth + " " + maxHeight);
 
-        if (maxHeight * 600.0 / (maxWidth * 436.0) > 1.0) {
+        if (maxHeight * 436.0 / (maxWidth * 600.0) > 1.0) {
             // height too big
             maxHeight = maxWidth / 436.0 * 600.0;
         } else {
             // width too big
             maxWidth = maxHeight / 600.0 * 436.0;
         }
-        System.out.println("After: " + maxWidth + " " + maxHeight);
         return new Dimension((int) Math.round(maxWidth), (int) Math.round(maxHeight));
     }
 
