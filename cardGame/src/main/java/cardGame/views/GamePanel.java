@@ -48,9 +48,18 @@ public class GamePanel extends JPanel implements Observer {
     private void paintPile(int x, int y, int width, int height, FaceDiscardPile pile, Graphics g) {
         List<Card> contents = pile.getContents();
         if (contents.size() == 4) {
-            // draw flipped cards
-        }
-        else if (contents.size() > 0) {
+            for (int i = 0; i < contents.size(); i++) {
+                Card card = contents.get(i);
+                int xPos = x + i * SPACING;
+                int yPos = y - i * SPACING;
+                if (card.getSuit() == Card.Suit.DIAMONDS || card.getSuit() == Card.Suit.HEARTS) {
+                    g.drawImage(CardBackTextures.getTexture(CardBack.CARD_BACK_RED), xPos, yPos, width, height, this);
+                } else {
+                    g.drawImage(CardBackTextures.getTexture(CardBack.CARD_BACK_BLUE), xPos, yPos, width, height, this);
+                }
+                g.drawRect(xPos, yPos, width, height);
+            }
+        } else if (contents.size() > 0) {
             // draw normal pile
             for (int i = 0; i < contents.size(); i++) {
                 Card card = contents.get(i);

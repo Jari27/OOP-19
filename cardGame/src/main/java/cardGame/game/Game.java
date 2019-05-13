@@ -25,6 +25,8 @@ public class Game extends Observable {
             if (face == Card.Face.ACE) {
                 try {
                     myPile.addCard(Card.ACE_DIAMONDS);
+                    myPile.addCard(Card.ACE_HEARTS);
+                    myPile.addCard(Card.ACE_SPADES);
                     myPile.addCard(Card.ACE_CLUBS);
                 }catch (WrongFaceException e) {
                     // do nothing woohoo
