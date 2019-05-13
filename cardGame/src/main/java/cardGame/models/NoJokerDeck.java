@@ -1,6 +1,7 @@
 package cardGame.models;
 
 public class NoJokerDeck extends AbstractDeck {
+
     @Override
     protected void addCards() {
         for (Card card : Card.values()) {
@@ -11,4 +12,6 @@ public class NoJokerDeck extends AbstractDeck {
         }
         this.shuffle();
     }
+
+
 }

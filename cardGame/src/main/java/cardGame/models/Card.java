@@ -77,7 +77,6 @@ public enum Card {
      * Represents the faces a card can have
      */
     public enum Face {
-        ACE("A"),
         TWO("2"),
         THREE("3"),
         FOUR("4"),
@@ -90,6 +89,7 @@ public enum Card {
         JACK("J"),
         QUEEN("Q"),
         KING("K"),
+        ACE("A"),
         JOKER("*");
 
         private String humanString;
