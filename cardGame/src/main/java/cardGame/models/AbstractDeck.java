@@ -118,6 +118,13 @@ abstract public class AbstractDeck {
             return cards.remove(cards.size() - 1);
         return null;
     }
+
+    public Card peek() {
+        if (!isEmpty()) {
+            return cards.get(cards.size() - 1);
+        }
+        return null;
+    }
     
     
 }

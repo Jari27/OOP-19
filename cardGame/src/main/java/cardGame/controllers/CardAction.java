@@ -1,0 +1,39 @@
+package cardGame.controllers;
+
+import cardGame.game.Game;
+import cardGame.models.Card;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.util.Observable;
+import java.util.Observer;
+
+public class CardAction extends AbstractAction implements Observer {
+
+    private Game game;
+    private Card.Face face;
+
+    public CardAction(Card.Face face, Game game) {
+        super();
+        this.game = game;
+        this.face = face;
+    }
+
+    private void fixEnabled() {
+        if (game.getDeck().isEmpty()) {
+            setEnabled(false);
+        } else {
+            setEnabled(true);
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        game.pickCard(face);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        fixEnabled();
+    }
+}

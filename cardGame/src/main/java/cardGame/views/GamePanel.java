@@ -1,11 +1,14 @@
 package cardGame.views;
 
+import cardGame.controllers.CardButton;
 import cardGame.game.Game;
 import cardGame.models.Card;
 import cardGame.models.FaceDiscardPile;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -20,13 +23,26 @@ public class GamePanel extends JPanel implements Observer {
     private static final int SPACING_DISCARD = 8; //px
 
     private Game game;
+    private List<CardButton> buttons = new ArrayList<>();
 
     public GamePanel(Game game) {
         this.game = game;
         game.addObserver(this);
         setBackground(new Color(30, 126, 17));
         this.setVisible(true);
+        this.setLayout(null);
         this.setOpaque(true);
+        this.createButtons();
+    }
+
+    private void createButtons() {
+        for (Card.Face face : Card.Face.values()) {
+            if (face != Card.Face.JOKER) {
+                CardButton button = new CardButton(game, face);
+                buttons.add(button);
+                this.add(button);
+            }
+        }
     }
 
     private Dimension getCardDimension() {
@@ -47,29 +63,29 @@ public class GamePanel extends JPanel implements Observer {
         // TODO
     }
 
-    private void paintPile(int x, int y, int width, int height, FaceDiscardPile pile, Graphics g) {
+    // draws the cards & returns the position of the last card that was drawn (or the default position)
+    private Point paintPile(int x, int y, int width, int height, FaceDiscardPile pile, Graphics g) {
         List<Card> contents = pile.getContents();
-        if (contents.size() == 4) {
-            for (int i = 0; i < contents.size(); i++) {
-                Card card = contents.get(i);
-                int xPos = x + i * SPACING_DISCARD;
-                int yPos = y - i * SPACING_DISCARD;
-                g.drawImage(CardBackTextures.getTexture(CardBack.CARD_BACK_BLUE), xPos, yPos, width, height, this);
-                g.drawRect(xPos, yPos, width, height);
+        int lastX = x;
+        int lastY = y;
+        for (int i = 0; i < contents.size(); i++) {
+            BufferedImage texture;
+            if (contents.size() == 4) {
+                texture = CardBackTextures.getTexture(CardBack.CARD_BACK_BLUE);
+            } else {
+                texture = CardTextures.getTexture(contents.get(i));
             }
-        } else if (contents.size() > 0) {
-            // draw normal pile
-            for (int i = 0; i < contents.size(); i++) {
-                Card card = contents.get(i);
-                int xPos = x + i * SPACING_DISCARD;
-                int yPos = y - i * SPACING_DISCARD;
-                g.drawImage(CardTextures.getTexture(card), xPos, yPos, width, height, this);
-                g.drawRect(xPos, yPos, width, height);
-            }
+            int xPos = x + i * SPACING_DISCARD;
+            int yPos = y - i * SPACING_DISCARD;
+            g.drawImage(texture, xPos, yPos, width, height, this);
+            g.drawRect(xPos, yPos, width, height);
+            lastX = xPos;
+            lastY = yPos;
         }
+        return new Point(lastX, lastY);
     }
 
-    private void paintDecksAndOutlines(Graphics g) {
+    private void paintDiscardPiles(Graphics g) {
         assert (Card.Face.values().length - 1 == CARDS_ON_FIRST_ROW + CARDS_ON_SECOND_ROW);
         // handle font
         g.setColor(new Color(0x000000));
@@ -79,7 +95,6 @@ public class GamePanel extends JPanel implements Observer {
 
         // calculate start of rows
         Dimension cardSize = getCardDimension();
-//        int yStartTop = (int) ((getHeight() - 2 * cardSize.height - MIN_MARGIN_Y) / 2.0);
         int yStartTop = MARGIN_TOP_Y;
         int xStartTop = (int) ((getWidth() - CARDS_ON_FIRST_ROW * cardSize.width - (CARDS_ON_FIRST_ROW - 1) * MIN_MARGIN_X) / 2.0);
 
@@ -105,20 +120,33 @@ public class GamePanel extends JPanel implements Observer {
             int stringX = posX + 2;
             int stringY = (posY + g.getFontMetrics().getAscent());
             g.drawString(string, stringX, stringY);
-
-            paintPile(posX, posY, cardSize.width, cardSize.height, piles.get(pileNum), g);
+            Point buttonLocation = paintPile(posX, posY, cardSize.width, cardSize.height, piles.get(pileNum), g);
+            if (buttons.size() >= CARDS_ON_FIRST_ROW + CARDS_ON_SECOND_ROW) {
+                CardButton button = buttons.get(pileNum);
+                button.setBounds(buttonLocation.x, buttonLocation.y, cardSize.width, cardSize.height);
+            }
         }
-
         g.setFont(currentFont);
     }
 
 
+    private void paintString(Graphics g) {
+        Font currentFont = g.getFont();
+        Font newFont = currentFont.deriveFont(Font.BOLD, 32.0f);
+        g.setFont(newFont);
+        double width = g.getFontMetrics().stringWidth(game.getStatus());
+        g.drawString(game.getStatus(),
+                (int) (getWidth() - width) / 2,
+                (MARGIN_TOP_Y  - g.getFontMetrics().getAscent()) / 2);
+        g.setFont(currentFont);
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        paintDecksAndOutlines(g);
+        paintDiscardPiles(g);
         paintDeck(g);
+        paintString(g);
     }
 
     @Override
