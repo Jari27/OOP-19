@@ -22,6 +22,7 @@ public class Game extends Observable {
                 continue;
             }
             FaceDiscardPile myPile = new FaceDiscardPile(face);
+            // this is just for testing purposes
             if (face == Card.Face.ACE) {
                 try {
                     myPile.addCard(Card.ACE_DIAMONDS);
