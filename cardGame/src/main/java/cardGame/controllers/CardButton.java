@@ -14,9 +14,13 @@ public class CardButton extends JButton {
             // hacky fix to prevent white buttons
             setBorderPainted(false);
         }
-
-        // todo make button hidden
         setToolTipText("Select the " + face.toHumanString());
+    }
+
+    @Override
+    protected void actionPropertyChanged(Action action, String s) {
+        super.actionPropertyChanged(action, s);
+        setToolTipText("");
     }
 
     public CardButton(Game game, Card.Face face) {
