@@ -167,14 +167,15 @@ public class GamePanel extends JPanel implements Observer {
 
     private void moveCards() {
         for (int i = 0; i < game.getDiscardPiles().size() ; i++) {
-            FaceDiscardPile pile = game.getDiscardPiles().get(i);
-            CardXY drawCard = new CardXY();
-            drawCard.card = pile.getContents().get(3);
-            drawCard.x = buttons.get(i).getX();
-            drawCard.y = buttons.get(i).getY();
-            drawCard.veloX = 2 + Math.random() * 1;
-            drawCard.veloY = -10 + Math.random() * 20;
-            allCardsToDraw.add(drawCard);
+            for (Card card : game.getDiscardPiles().get(i).getContents()) {
+                CardXY drawCard = new CardXY();
+                drawCard.card = card;
+                drawCard.x = buttons.get(i).getX();
+                drawCard.y = buttons.get(i).getY();
+                drawCard.veloX = 2 + Math.random() * 1;
+                drawCard.veloY = -10 + Math.random() * 20;
+                allCardsToDraw.add(drawCard);
+            }
         }
 
         int delay = 10; //milliseconds
