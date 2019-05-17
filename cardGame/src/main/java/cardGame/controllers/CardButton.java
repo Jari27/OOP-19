@@ -10,6 +10,10 @@ public class CardButton extends JButton {
     private void setButtonProperties(Card.Face face) {
         setVisible(true);
         setContentAreaFilled(false);
+        if (System.getProperty("os.name").contains("Mac")) {
+            // hacky fix to prevent white buttons
+            setBorderPainted(false);
+        }
 
         // todo make button hidden
         setToolTipText("Select the " + face.toHumanString());
