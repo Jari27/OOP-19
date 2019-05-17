@@ -59,10 +59,6 @@ public class GamePanel extends JPanel implements Observer {
         return new Dimension((int) Math.round(maxWidth), (int) Math.round(maxHeight));
     }
 
-    private void paintDeck(Graphics g) {
-        // TODO
-    }
-
     // draws the cards & returns the position of the last card that was drawn (or the default position)
     private Point paintPile(int x, int y, int width, int height, FaceDiscardPile pile, Graphics g) {
         List<Card> contents = pile.getContents();
@@ -145,7 +141,6 @@ public class GamePanel extends JPanel implements Observer {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         paintDiscardPiles(g);
-        paintDeck(g);
         paintString(g);
     }
 

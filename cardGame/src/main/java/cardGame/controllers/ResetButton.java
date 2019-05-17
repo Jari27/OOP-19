@@ -8,5 +8,6 @@ public class ResetButton extends JButton {
 
     public ResetButton(Game game) {
         super(new ResetAction(game));
+        setToolTipText("Reset the game!");
     }
 }

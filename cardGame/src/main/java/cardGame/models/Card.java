@@ -108,7 +108,7 @@ public enum Card {
      */
     public enum Colour {
         RED,
-        BLACK;
+        BLACK
     }
 
     /**
@@ -125,7 +125,7 @@ public enum Card {
         /**
          * Create a new suit with the appropriate colour
          */
-        private Suit(Colour colour) {
+        Suit(Colour colour) {
             this.colour = colour;
         }
 
