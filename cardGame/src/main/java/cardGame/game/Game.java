@@ -90,4 +90,8 @@ public class Game extends Observable {
     public String getStatus() {
         return status;
     }
+
+    public boolean isFinished() {
+        return deck.isEmpty();
+    }
 }

@@ -7,6 +7,8 @@ import cardGame.models.FaceDiscardPile;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ public class GamePanel extends JPanel implements Observer {
 
     private Game game;
     private List<CardButton> buttons = new ArrayList<>();
+    private List<CardXY> allCardsToDraw = new ArrayList<>();
 
     public GamePanel(Game game) {
         this.game = game;
@@ -125,7 +128,6 @@ public class GamePanel extends JPanel implements Observer {
         g.setFont(currentFont);
     }
 
-
     private void paintString(Graphics g) {
         Font currentFont = g.getFont();
         Font newFont = currentFont.deriveFont(Font.BOLD, 32.0f);
@@ -137,15 +139,83 @@ public class GamePanel extends JPanel implements Observer {
         g.setFont(currentFont);
     }
 
+    private void finish(Graphics g){
+
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        paintDiscardPiles(g);
-        paintString(g);
+        if (!game.isFinished()) {
+            paintDiscardPiles(g);
+            paintString(g);
+        } else {
+            Dimension dim = getCardDimension();
+            for (CardXY card : allCardsToDraw) {
+                g.drawImage(CardBackTextures.getTexture(CardBack.CARD_BACK_BLUE), (int) card.x, (int) Math.round(card.y), dim.width, dim.height, this);
+            }
+        }
     }
 
     @Override
     public void update(Observable o, Object arg) {
         repaint();
+        if (game.isFinished()) {
+            moveCards();
+        }
+    }
+
+    private void moveCards() {
+        for (int i = 0; i < game.getDiscardPiles().size() ; i++) {
+            FaceDiscardPile pile = game.getDiscardPiles().get(i);
+            CardXY drawCard = new CardXY();
+            drawCard.card = pile.getContents().get(3);
+            drawCard.x = buttons.get(i).getX();
+            drawCard.y = buttons.get(i).getY();
+            drawCard.veloX = 2 + Math.random() * 1;
+            drawCard.veloY = -10 + Math.random() * 20;
+            allCardsToDraw.add(drawCard);
+        }
+
+        int delay = 10; //milliseconds
+        ActionListener taskPerformer = evt -> {
+            for (CardXY card : allCardsToDraw) {
+                card.x += card.veloX;
+                double newY = card.y + card.veloY;
+                if (newY + getCardDimension().height > getHeight()) {
+                    card.veloY = -card.veloY;
+                    card.veloY *= 0.9;
+                }
+                card.veloY += 0.1;
+                card.y += card.veloY;
+                if (card.y + getCardDimension().height > getHeight()) {
+                    card.y = getHeight() - getCardDimension().height;
+                }
+            }
+            repaint();
+        };
+        new Timer(delay, taskPerformer).start();
+
+        /*
+        for (int i = 0; i < 5; i++) {
+            for (CardXY card : allCardsToDraw) {
+                card.x += 1;
+                card.y += 1;
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                System.err.println(e.getStackTrace());
+            }
+            repaint();
+        }*/
+    }
+
+    private class CardXY {
+        public Card card;
+        public double x;
+        public double y;
+        public double veloX;
+        public double veloY;
     }
 }

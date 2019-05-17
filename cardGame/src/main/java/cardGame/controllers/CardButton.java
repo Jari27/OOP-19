@@ -22,6 +22,9 @@ public class CardButton extends JButton {
         super.actionPropertyChanged(action, s);
         if (!action.isEnabled()){
             setToolTipText("");
+            setBorderPainted(false);
+        } else {
+            setBorderPainted(false);
         }
     }
 
