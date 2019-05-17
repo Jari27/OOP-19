@@ -70,7 +70,7 @@ public class GamePanel extends JPanel implements Observer {
         int lastY = y;
         for (int i = 0; i < contents.size(); i++) {
             BufferedImage texture;
-            if (contents.size() == 4) {
+            if (pile.isFull()) {
                 texture = CardBackTextures.getTexture(CardBack.CARD_BACK_BLUE);
             } else {
                 texture = CardTextures.getTexture(contents.get(i));

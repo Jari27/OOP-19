@@ -29,6 +29,10 @@ public class FaceDiscardPile {
         contents.add(card);
     }
 
+    public boolean isFull() {
+        return this.contents.size() >= 4;
+    }
+
     public Card.Face getType() {
         return type;
     }

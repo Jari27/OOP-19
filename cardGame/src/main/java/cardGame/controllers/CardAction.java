@@ -2,6 +2,7 @@ package cardGame.controllers;
 
 import cardGame.game.Game;
 import cardGame.models.Card;
+import cardGame.models.FaceDiscardPile;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -10,6 +11,7 @@ import java.util.Observer;
 
 public class CardAction extends AbstractAction implements Observer {
 
+    private FaceDiscardPile associatedPile;
     private Game game;
     private Card.Face face;
 
@@ -17,10 +19,14 @@ public class CardAction extends AbstractAction implements Observer {
         super();
         this.game = game;
         this.face = face;
+        game.addObserver(this);
+
+        this.associatedPile = game.getDiscardPiles().get(face.ordinal());
+        fixEnabled();
     }
 
     private void fixEnabled() {
-        if (game.getDeck().isEmpty()) {
+        if (associatedPile.isFull()) {
             setEnabled(false);
         } else {
             setEnabled(true);
