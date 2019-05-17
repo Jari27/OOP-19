@@ -19,6 +19,10 @@ public class FaceDiscardPile {
         this.contents = new ArrayList<>();
     }
 
+    public void clear() {
+        this.contents.clear();
+    }
+
     public void addCard(Card card) throws WrongFaceException {
         if (card.getFace() != type) {
             throw new WrongFaceException("This card has the wrong face!\nThe pile accepts "

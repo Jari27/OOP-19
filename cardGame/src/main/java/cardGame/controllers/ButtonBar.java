@@ -7,6 +7,7 @@ import javax.swing.*;
 public class ButtonBar extends JMenuBar {
 
     public ButtonBar(Game game) {
-        // TODO implement this
+        ResetButton reset = new ResetButton(game);
+        this.add(reset);
     }
 }

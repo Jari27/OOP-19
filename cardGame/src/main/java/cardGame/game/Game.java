@@ -69,6 +69,16 @@ public class Game extends Observable {
         }
     }
 
+    public void reset() {
+        this.deck = new NoJokerDeck();
+        for (FaceDiscardPile pile : discardPiles) {
+            pile.clear();
+        }
+        status = "Game reset. Please pick a card!";
+        setChanged();
+        notifyObservers();
+    }
+
     public List<FaceDiscardPile> getDiscardPiles() {
         return discardPiles;
     }

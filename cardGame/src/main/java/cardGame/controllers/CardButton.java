@@ -20,7 +20,9 @@ public class CardButton extends JButton {
     @Override
     protected void actionPropertyChanged(Action action, String s) {
         super.actionPropertyChanged(action, s);
-        setToolTipText("");
+        if (!action.isEnabled()){
+            setToolTipText("");
+        }
     }
 
     public CardButton(Game game, Card.Face face) {
