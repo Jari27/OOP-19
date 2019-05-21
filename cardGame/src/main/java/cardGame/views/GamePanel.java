@@ -6,14 +6,12 @@ import cardGame.models.Card;
 import cardGame.models.FaceDiscardPile;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 public class GamePanel extends JPanel implements Observer {
 
@@ -23,6 +21,9 @@ public class GamePanel extends JPanel implements Observer {
     private static final int CARDS_ON_FIRST_ROW = 7;
     private static final int CARDS_ON_SECOND_ROW = 6;
     private static final int SPACING_DISCARD = 8; //px
+
+    private static final int DELAY = 10; //milliseconds
+    private final Timer timer = new Timer(DELAY, null);
 
     private Game game;
     private List<CardButton> buttons = new ArrayList<>();
@@ -36,6 +37,31 @@ public class GamePanel extends JPanel implements Observer {
         this.setLayout(null);
         this.setOpaque(true);
         this.createButtons();
+
+        // setup end of game stuff
+        ActionListener taskPerformer = evt -> {
+            System.out.println(allCardsToDraw.size() + " cards jumping around...");
+            for (ListIterator<CardXY> iter = allCardsToDraw.listIterator(); iter.hasNext(); ) {
+                CardXY card = iter.next();
+                card.x += card.veloX;
+                if (card.x > getWidth()) {
+                    iter.remove();
+                    continue;
+                }
+                card.veloY += 0.1;
+                card.y += card.veloY;
+                if (card.y + getCardDimension().height > getHeight()) {
+                    card.veloY *= -0.9;
+                    card.y = getHeight() - getCardDimension().height;
+                }
+            }
+            repaint();
+            if (allCardsToDraw.isEmpty() && timer.isRunning()) {
+                System.out.println("Timer stopped.");
+                timer.stop();
+            }
+        };
+        timer.addActionListener(taskPerformer);
     }
 
     private void createButtons() {
@@ -139,10 +165,6 @@ public class GamePanel extends JPanel implements Observer {
         g.setFont(currentFont);
     }
 
-    private void finish(Graphics g){
-
-    }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -162,6 +184,8 @@ public class GamePanel extends JPanel implements Observer {
         repaint();
         if (game.isFinished()) {
             moveCards();
+        } else {
+            allCardsToDraw.clear();
         }
     }
 
@@ -177,39 +201,7 @@ public class GamePanel extends JPanel implements Observer {
                 allCardsToDraw.add(drawCard);
             }
         }
-
-        int delay = 10; //milliseconds
-        ActionListener taskPerformer = evt -> {
-            for (CardXY card : allCardsToDraw) {
-                card.x += card.veloX;
-                double newY = card.y + card.veloY;
-                if (newY + getCardDimension().height > getHeight()) {
-                    card.veloY = -card.veloY;
-                    card.veloY *= 0.9;
-                }
-                card.veloY += 0.1;
-                card.y += card.veloY;
-                if (card.y + getCardDimension().height > getHeight()) {
-                    card.y = getHeight() - getCardDimension().height;
-                }
-            }
-            repaint();
-        };
-        new Timer(delay, taskPerformer).start();
-
-        /*
-        for (int i = 0; i < 5; i++) {
-            for (CardXY card : allCardsToDraw) {
-                card.x += 1;
-                card.y += 1;
-            }
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                System.err.println(e.getStackTrace());
-            }
-            repaint();
-        }*/
+        timer.start();
     }
 
     private class CardXY {
