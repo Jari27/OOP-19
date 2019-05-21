@@ -22,13 +22,13 @@ abstract public class AbstractDeck {
      * is essential, as the algorithm used for it is also used in the
      * shuffle-method.
      */
-    protected List<Card> cards;
+    private List<Card> cards;
     private Random random;
     
     /**
      * Create a new deck with no cards
      */
-    public AbstractDeck() {
+    AbstractDeck() {
         cards = new ArrayList<>();
         random = new Random(nextSeed());
         addCards();
@@ -50,7 +50,7 @@ abstract public class AbstractDeck {
     /**
      * Place a card back on the deck at the top of the deck
      */
-    public void addOnTop(Card card) {
+    void addOnTop(Card card) {
         cards.add(card);
     }
     
@@ -81,7 +81,7 @@ abstract public class AbstractDeck {
      * Shuffle the deck using a Knuth/Fisher-Yates shuffle. Every card is
      * swapped with an arbitrary card from the cards after it.
      */
-    public void shuffle() {
+    void shuffle() {
         for(int index = 0; index < cards.size() - 1; ++index) {
             int swapIndex = index + random.nextInt(cards.size() - index);
             Collections.swap(cards, index, swapIndex);
@@ -105,7 +105,7 @@ abstract public class AbstractDeck {
     /**
      * Make this deck empty (e.g. make isEmpty() return true)
      */
-    public void empty() {
+    private void empty() {
         cards.clear();
     }
     

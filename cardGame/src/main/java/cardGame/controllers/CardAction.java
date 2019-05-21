@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.util.Observable;
 import java.util.Observer;
 
-public class CardAction extends AbstractAction implements Observer {
+class CardAction extends AbstractAction implements Observer {
 
     private FaceDiscardPile associatedPile;
     private Game game;

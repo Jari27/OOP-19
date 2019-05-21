@@ -4,7 +4,7 @@ import cardGame.game.Game;
 
 import javax.swing.*;
 
-public class ResetButton extends JButton {
+class ResetButton extends JButton {
 
     public ResetButton(Game game) {
         super(new ResetAction(game));

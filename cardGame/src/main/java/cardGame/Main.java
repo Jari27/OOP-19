@@ -7,7 +7,7 @@ import cardGame.views.GamePanel;
 import javax.swing.*;
 import java.awt.*;
 
-public class Main {
+class Main {
 
     public static void main(String[] args) {
         Game game = new Game();

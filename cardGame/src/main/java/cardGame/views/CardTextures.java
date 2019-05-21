@@ -14,17 +14,17 @@ import java.util.EnumMap;
  * eagerly (at startup) to prevent loading times from slowing the program down
  * at runtime.
  */
-public class CardTextures {
+class CardTextures {
 
     private static EnumMap<Card, BufferedImage> textures;
     
-    /** 
-     * This block initalizes the textures on launch. It is executed once when
-     * the class is loaded into the JVM (when the program is started) meaning
-     * that this process won't take time during execution.
+    /*
+      This block initalizes the textures on launch. It is executed once when
+      the class is loaded into the JVM (when the program is started) meaning
+      that this process won't take time during execution.
      */
     static {
-        textures = new EnumMap<Card, BufferedImage>(Card.class);
+        textures = new EnumMap<>(Card.class);
         for(Card card : Card.values()) {
             BufferedImage texture = null;
             String fileName = "target/classes/textures/" + card + ".png";

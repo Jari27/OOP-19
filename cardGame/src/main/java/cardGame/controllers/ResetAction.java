@@ -5,7 +5,7 @@ import cardGame.game.Game;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-public class ResetAction extends AbstractAction {
+class ResetAction extends AbstractAction {
 
     private Game game;
 

@@ -132,7 +132,7 @@ public enum Card {
         /**
          * Get the colour of this suit.
          */
-        public Colour getColour() {
+        Colour getColour() {
             return colour;
         }
     }

@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.util.Observable;
 import java.util.Observer;
 
-public class FinishAction extends AbstractAction implements Observer {
+class FinishAction extends AbstractAction implements Observer {
 
     private Game game;
 

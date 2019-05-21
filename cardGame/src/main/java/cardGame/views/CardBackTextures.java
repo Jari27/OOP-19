@@ -12,17 +12,17 @@ import java.util.EnumMap;
  * (at startup) to prevent loading times from slowing the program down
  * at runtime.
  */
-public class CardBackTextures {
+class CardBackTextures {
 
     private static EnumMap<CardBack, BufferedImage> textures;
     
-    /** 
-     * This block initalizes the textures on launch. It is executed once when
-     * the class is loaded into the JVM (when the program is started) meaning
-     * that this process won't take time during execution.
+    /*
+      This block initalizes the textures on launch. It is executed once when
+      the class is loaded into the JVM (when the program is started) meaning
+      that this process won't take time during execution.
      */
     static {
-        textures = new EnumMap<CardBack, BufferedImage>(CardBack.class);
+        textures = new EnumMap<>(CardBack.class);
         for(CardBack back : CardBack.values()) {
             BufferedImage texture = null;
             String fileName = "target/classes/textures/" + back + ".png";

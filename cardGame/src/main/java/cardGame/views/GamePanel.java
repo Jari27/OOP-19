@@ -205,10 +205,10 @@ public class GamePanel extends JPanel implements Observer {
     }
 
     private class CardXY {
-        public Card card;
-        public double x;
-        public double y;
-        public double veloX;
-        public double veloY;
+        Card card;
+        double x;
+        double y;
+        double veloX;
+        double veloY;
     }
 }

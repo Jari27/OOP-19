@@ -4,7 +4,7 @@ import cardGame.game.Game;
 
 import javax.swing.*;
 
-public class FinishButton extends JButton {
+class FinishButton extends JButton {
 
     public FinishButton(Game game) {
         super(new FinishAction(game));
