@@ -1,0 +1,5 @@
+package graphEditor;
+
+class GraphEditorTest {
+
+}
