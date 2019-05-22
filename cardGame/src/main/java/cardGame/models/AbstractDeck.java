@@ -119,6 +119,9 @@ abstract public class AbstractDeck {
         return null;
     }
 
+    /**
+     * Returns the card on top of the deck, if deck is not empty.
+     */
     public Card peek() {
         if (!isEmpty()) {
             return cards.get(cards.size() - 1);

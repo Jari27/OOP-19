@@ -9,6 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
+/**
+ * Represents the game 'F*ck the dealer'. In this game the player guesses the card that is on top of the deck.
+ * If the guess is correct, the dealer drinks and the turn moves to another player, otherwise the player can guess again.
+ * But first the dealer indicates whether the card on top of the deck is higher of lower than the picked card.
+ * If the guess is wrong again, the player drinks.
+ */
 public class Game extends Observable {
 
     private ArrayList<FaceDiscardPile> discardPiles;
@@ -16,6 +22,9 @@ public class Game extends Observable {
     private boolean firstChance = true;
     private String status = "Pick a card!";
 
+    /**
+     * Create the deck with no jokers and the discard piles
+     */
     public Game() {
         this.deck = new NoJokerDeck();
         this.discardPiles = new ArrayList<>();
@@ -28,6 +37,9 @@ public class Game extends Observable {
         }
     }
 
+    /**
+     * The interaction with the user and move card to corresponding discard pile
+     */
     public void pickCard(Card.Face face) {
         Card nextCard = deck.peek();
         if (nextCard.getFace() == face) {
@@ -61,6 +73,9 @@ public class Game extends Observable {
         notifyObservers();
     }
 
+    /**
+     * move card to corresponding discard pile with exception check
+     */
     private void moveToDiscardPile(Card card) {
         try {
             discardPiles.get(card.getFace().ordinal()).addCard(card);
@@ -69,6 +84,9 @@ public class Game extends Observable {
         }
     }
 
+    /**
+     * Reset the game
+     */
     public void reset() {
         this.deck = new NoJokerDeck();
         for (FaceDiscardPile pile : discardPiles) {
@@ -79,10 +97,16 @@ public class Game extends Observable {
         notifyObservers();
     }
 
+    /**
+     * Getter for the discard piles
+     */
     public List<FaceDiscardPile> getDiscardPiles() {
         return discardPiles;
     }
 
+    /**
+     * Getter for the deck
+     */
     public NoJokerDeck getDeck() {
         return deck;
     }
@@ -91,6 +115,9 @@ public class Game extends Observable {
         return status;
     }
 
+    /**
+     * Check whether game is finished, deck is empty
+     */
     public boolean isFinished() {
         return deck.isEmpty();
     }
