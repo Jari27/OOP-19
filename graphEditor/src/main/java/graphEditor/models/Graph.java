@@ -1,19 +1,35 @@
 package graphEditor.models;
 
+import graphEditor.controllers.SelectionController;
+
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+import java.util.Observer;
 
-public class Graph extends Observable {
+public class Graph extends Observable implements Observer {
 
-    List<GraphVertex> vertices;
-    List<GraphEdge> edges;
+    private final List<GraphVertex> vertices = new ArrayList<>();
+    private final List<GraphEdge> edges  = new ArrayList<>();
+
+    private final SelectionController selectionController = new SelectionController(this);
 
     public Graph() {
-        this.vertices = new ArrayList<>();
-        this.edges = new ArrayList<>();
+        GraphVertex v1 = new GraphVertex();
+        v1.setName("Test1");
+        v1.setSize(new Dimension(100, 100));
+        v1.setLocation(new Point(200, 200));
+
+        GraphVertex v2 = new GraphVertex();
+        v2.setName("Test2");
+
+        vertices.add(v1);
+        vertices.add(v2);
+
+        addEdge(v1, v2);
+
     }
 
     public Graph(File file) {
@@ -45,7 +61,6 @@ public class Graph extends Observable {
         assert (resultSplit.length != numVertex + numEdge + 1);
 
         // load vertices
-        this.vertices = new ArrayList<>(numVertex);
         for (int i = 0; i < numVertex; i++) {
             GraphVertex vertex = new GraphVertex();
             tmp = resultSplit[1 + i].split(" ");
@@ -65,7 +80,6 @@ public class Graph extends Observable {
         }
 
         // load edges
-        this.edges = new ArrayList<>(numEdge);
         for (int i = 0; i < numEdge; i++) {
             tmp = resultSplit[1 + numVertex + i].split(" ");
             // get associated vertices
@@ -90,7 +104,7 @@ public class Graph extends Observable {
         }
     }
 
-    public String getSaveData() {
+    private String getSaveData() {
         StringBuilder builder = new StringBuilder();
         builder.append(vertices.size())
                 .append(" ")
@@ -133,6 +147,8 @@ public class Graph extends Observable {
     public GraphVertex addVertex() {
         GraphVertex vertex = new GraphVertex();
         vertices.add(vertex);
+        selectionController.getSelecteds().clear();
+        selectionController.getSelecteds().add(vertex);
         setChanged();
         notifyObservers();
         return vertex;
@@ -168,5 +184,27 @@ public class Graph extends Observable {
 
     public List<GraphVertex> getVertices() {
         return vertices;
+    }
+
+    public List<GraphEdge> getEdges() {
+        return edges;
+    }
+
+    public boolean isSelected(GraphVertex v) {
+        return selectionController.getSelecteds().contains(v);
+    }
+
+    public boolean isSelected(GraphEdge e) {
+        return selectionController.getSelecteds().contains(e.getV1()) || selectionController.getSelecteds().contains(e.getV2());
+    }
+
+    public SelectionController getSelectionController() {
+        return selectionController;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        setChanged();
+        notifyObservers();
     }
 }

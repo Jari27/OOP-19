@@ -14,8 +14,14 @@ public class AddVertexAction extends AbstractAction {
         this.graph = graph;
     }
 
+    public AddVertexAction setGraph(Graph graph) {
+        this.graph = graph;
+        return this;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         graph.addVertex();
     }
+
 }
