@@ -7,6 +7,11 @@ import cardGame.views.GamePanel;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Runs the game 'F*ck the dealer'. Although technically a controller this class can be found
+ * more easily if it's not in that package
+ */
+
 class Main {
 
     public static void main(String[] args) {

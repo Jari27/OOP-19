@@ -12,7 +12,9 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
-
+/**
+ * View of Draw
+ */
 public class GamePanel extends JPanel implements Observer {
 
     private static final int MIN_MARGIN_X = 30; //px
@@ -29,6 +31,10 @@ public class GamePanel extends JPanel implements Observer {
     private List<CardButton> buttons = new ArrayList<>();
     private List<CardXY> allCardsToDraw = new ArrayList<>();
 
+    /**
+     * Create a new DrawPanel
+     */
+
     public GamePanel(Game game) {
         this.game = game;
         game.addObserver(this);
@@ -38,7 +44,7 @@ public class GamePanel extends JPanel implements Observer {
         this.setOpaque(true);
         this.createButtons();
 
-        // setup end of game stuff
+        // setup end of game, which makes all the cards move to the right, while jumping.
         ActionListener taskPerformer = evt -> {
             System.out.println(allCardsToDraw.size() + " cards jumping around...");
             for (ListIterator<CardXY> iter = allCardsToDraw.listIterator(); iter.hasNext(); ) {
@@ -64,6 +70,9 @@ public class GamePanel extends JPanel implements Observer {
         timer.addActionListener(taskPerformer);
     }
 
+    /**
+     * Create invisible buttons on top of discard piles
+     */
     private void createButtons() {
         for (Card.Face face : Card.Face.values()) {
             if (face != Card.Face.JOKER) {
@@ -74,6 +83,9 @@ public class GamePanel extends JPanel implements Observer {
         }
     }
 
+    /**
+     * Calculate the dimensions (height, width) of the cards
+     */
     private Dimension getCardDimension() {
         double maxWidth = Math.max(0, (getWidth() - (CARDS_ON_FIRST_ROW + 1) * MIN_MARGIN_X) / (double) CARDS_ON_FIRST_ROW);
         double maxHeight = Math.max(0, (getHeight() - 2 * MIN_MARGIN_Y - MARGIN_TOP_Y) / (double) 2);
@@ -110,6 +122,9 @@ public class GamePanel extends JPanel implements Observer {
         return new Point(lastX, lastY);
     }
 
+    /**
+     * Discard piles are painted
+     */
     private void paintDiscardPiles(Graphics g) {
         assert (Card.Face.values().length - 1 == CARDS_ON_FIRST_ROW + CARDS_ON_SECOND_ROW);
         // handle font
@@ -154,6 +169,9 @@ public class GamePanel extends JPanel implements Observer {
         g.setFont(currentFont);
     }
 
+    /**
+     * Paint the strings that instructs the player(s)
+     */
     private void paintString(Graphics g) {
         Font currentFont = g.getFont();
         Font newFont = currentFont.deriveFont(Font.BOLD, 32.0f);
@@ -179,6 +197,9 @@ public class GamePanel extends JPanel implements Observer {
         }
     }
 
+    /**
+     * Update checks whether game is finished. If it is finished, the cards are moved.
+     */
     @Override
     public void update(Observable o, Object arg) {
         repaint();
@@ -189,6 +210,9 @@ public class GamePanel extends JPanel implements Observer {
         }
     }
 
+    /**
+     * Move the cards in the discard piles to the right while jumping
+     */
     private void moveCards() {
         for (int i = 0; i < game.getDiscardPiles().size() ; i++) {
             for (Card card : game.getDiscardPiles().get(i).getContents()) {
