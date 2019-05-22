@@ -1,6 +1,5 @@
 package graphEditor.views;
 
-import graphEditor.controllers.SelectionController;
 import graphEditor.controllers.actions.AddVertexAction;
 import graphEditor.models.Graph;
 
@@ -11,7 +10,6 @@ public class GraphFrame extends JFrame {
 
     Graph graph;
     GraphPanel panel;
-    SelectionController selectionController;
 
     public GraphFrame() throws HeadlessException {
         init();
@@ -69,7 +67,6 @@ public class GraphFrame extends JFrame {
             this.graph.deleteObservers();
         }
         this.graph = graph;
-        selectionController = new SelectionController(graph);
         this.updateInterface();
 
         return this;

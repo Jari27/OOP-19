@@ -1,7 +1,5 @@
 package graphEditor.models;
 
-import graphEditor.controllers.SelectionController;
-
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -14,8 +12,6 @@ public class Graph extends Observable implements Observer {
     private final List<GraphVertex> vertices = new ArrayList<>();
     private final List<GraphEdge> edges  = new ArrayList<>();
 
-    private final SelectionController selectionController = new SelectionController(this);
-
     public Graph() {
         GraphVertex v1 = new GraphVertex();
         v1.setName("Test1");
@@ -23,13 +19,15 @@ public class Graph extends Observable implements Observer {
         v1.setLocation(new Point(200, 200));
 
         GraphVertex v2 = new GraphVertex();
+        v2.setSize(new Dimension(100, 100));
         v2.setName("Test2");
 
         vertices.add(v1);
+        v1.addObserver(this);
         vertices.add(v2);
+        v2.addObserver(this);
 
         addEdge(v1, v2);
-
     }
 
     public Graph(File file) {
@@ -41,7 +39,7 @@ public class Graph extends Observable implements Observer {
         String result;
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             StringBuilder builder = new StringBuilder();
-            String line = null;
+            String line;
             while ((line = reader.readLine()) != null) {
                 builder.append(line);
             }
@@ -147,8 +145,8 @@ public class Graph extends Observable implements Observer {
     public GraphVertex addVertex() {
         GraphVertex vertex = new GraphVertex();
         vertices.add(vertex);
-        selectionController.getSelecteds().clear();
-        selectionController.getSelecteds().add(vertex);
+        selectOnly(vertex);
+        vertex.addObserver(this);
         setChanged();
         notifyObservers();
         return vertex;
@@ -164,6 +162,7 @@ public class Graph extends Observable implements Observer {
 
     public GraphVertex removeVertex(GraphVertex vertex) {
         boolean didRemove = vertices.remove(vertex);
+        vertex.deleteObservers();
         // O(n^2)
         // can make quicker using LinkedList and ListIterator
         List<GraphEdge> edgesToRemove = new ArrayList<>();
@@ -190,16 +189,62 @@ public class Graph extends Observable implements Observer {
         return edges;
     }
 
-    public boolean isSelected(GraphVertex v) {
-        return selectionController.getSelecteds().contains(v);
+    public void select(GraphVertex... vertices) {
+        for (GraphVertex vertex : vertices) {
+            vertex.setSelected(true);
+        }
+        setChanged();
+        notifyObservers();
     }
 
-    public boolean isSelected(GraphEdge e) {
-        return selectionController.getSelecteds().contains(e.getV1()) || selectionController.getSelecteds().contains(e.getV2());
+    public void selectOnly(GraphVertex... vertices) {
+        unselectAll();
+        for (GraphVertex vertex : vertices) {
+            vertex.setSelected(true);
+        }
+        setChanged();
+        notifyObservers();
     }
 
-    public SelectionController getSelectionController() {
-        return selectionController;
+    public void selectAll() {
+        for (GraphVertex vertex : vertices) {
+            vertex.setSelected(true);
+        }
+        setChanged();
+        notifyObservers();
+    }
+
+    public void unSelect(GraphVertex... vertices) {
+        for (GraphVertex vertex : vertices) {
+            vertex.setSelected(false);
+        }
+        setChanged();
+        notifyObservers();
+    }
+
+    public void unselectAll() {
+        for (GraphVertex vertex : vertices) {
+            vertex.setSelected(false);
+        }
+        setChanged();
+        notifyObservers();
+    }
+
+    public boolean isSelected(GraphVertex vertex) {
+        return vertex.isSelected();
+    }
+
+    public boolean isAnyVertexSelected() {
+        for (GraphVertex vertex : vertices) {
+            if (vertex.isSelected()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isSelected(GraphEdge edge) {
+        return edge.getV1().isSelected() || edge.getV2().isSelected();
     }
 
     @Override

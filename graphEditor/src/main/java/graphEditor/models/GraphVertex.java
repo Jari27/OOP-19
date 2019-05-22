@@ -2,7 +2,7 @@ package graphEditor.models;
 
 import java.awt.*;
 
-public class GraphVertex {
+public class GraphVertex extends Selectable {
 
     private static Point defaultLocation = new Point(0, 0);
     private static Dimension defaultSize = new Dimension(80, 30);
@@ -29,6 +29,8 @@ public class GraphVertex {
 
     public GraphVertex setName(String name) {
         this.name = name;
+        setChanged();
+        notifyObservers();
         return this;
     }
 
@@ -38,6 +40,8 @@ public class GraphVertex {
 
     public GraphVertex setSize(Dimension size) {
         this.size = size;
+        setChanged();
+        notifyObservers();
         return this;
     }
 
@@ -47,6 +51,8 @@ public class GraphVertex {
 
     public GraphVertex setLocation(Point location) {
         this.location = location;
+        setChanged();
+        notifyObservers();
         return this;
     }
 
@@ -65,4 +71,5 @@ public class GraphVertex {
     public static void setDefaultSize(Dimension defaultSize) {
         GraphVertex.defaultSize = defaultSize;
     }
+
 }

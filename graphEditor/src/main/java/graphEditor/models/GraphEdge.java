@@ -1,6 +1,6 @@
 package graphEditor.models;
 
-public class GraphEdge {
+public class GraphEdge extends Selectable {
 
     private GraphVertex v1;
     private GraphVertex v2;

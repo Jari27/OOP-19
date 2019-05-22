@@ -1,5 +1,6 @@
 package graphEditor.views;
 
+import graphEditor.controllers.SelectionController;
 import graphEditor.models.Graph;
 import graphEditor.models.GraphEdge;
 import graphEditor.models.GraphVertex;
@@ -7,6 +8,7 @@ import graphEditor.models.GraphVertex;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -25,7 +27,6 @@ public class GraphPanel extends JPanel implements Observer {
 
     public GraphPanel(Graph graph) {
         this.setGraph(graph);
-
     }
 
     public GraphPanel setGraph(Graph graph) {
@@ -35,11 +36,16 @@ public class GraphPanel extends JPanel implements Observer {
         this.graph = graph;
         this.graph.addObserver(this);
         // remove old listeners
+        for (MouseMotionListener listener : getMouseMotionListeners()) {
+            removeMouseMotionListener(listener);
+        }
         for (MouseListener listener : getMouseListeners()) {
             removeMouseListener(listener);
         }
         // add new listeners
-        this.addMouseListener(this.graph.getSelectionController());
+        SelectionController controller = new SelectionController(graph, this);
+        this.addMouseListener(controller);
+        this.addMouseMotionListener(controller);
         return this;
     }
 
@@ -79,13 +85,13 @@ public class GraphPanel extends JPanel implements Observer {
             int y = vertex.getLocation().y;
             int width = vertex.getSize().width;
             int height = vertex.getSize().height;
-            if (graph.isSelected(vertex)) {
+            if (vertex.isSelected()) {
                 g.setColor(COLOR_FILL_SELECTED);
             } else {
                 g.setColor(COLOR_FILL_DEFAULT);
             }
             g.fillRect(x, y, width, height);
-            if (graph.isSelected(vertex)) {
+            if (vertex.isSelected()) {
                 g.setColor(COLOR_EDGE_SELECTED);
             } else {
                 g.setColor(COLOR_EDGE_DEFAULT);
