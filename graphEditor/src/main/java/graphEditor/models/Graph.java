@@ -41,7 +41,7 @@ public class Graph extends Observable implements Observer {
             StringBuilder builder = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
-                builder.append(line);
+                builder.append(line + "\n");
             }
             result = builder.toString();
         } catch (IOException e) {
@@ -58,6 +58,7 @@ public class Graph extends Observable implements Observer {
         // quick and dirty file verification
         assert (resultSplit.length != numVertex + numEdge + 1);
 
+        ArrayList<GraphVertex> tmpVertices = new ArrayList<>();
         // load vertices
         for (int i = 0; i < numVertex; i++) {
             GraphVertex vertex = new GraphVertex();
@@ -74,17 +75,33 @@ public class Graph extends Observable implements Observer {
             vertex.setSize(size);
             // set name
             vertex.setName(tmp[4]);
-            vertices.add(vertex);
+            tmpVertices.add(vertex);
         }
 
+        ArrayList<GraphEdge> tmpEdges = new ArrayList<>();
         // load edges
         for (int i = 0; i < numEdge; i++) {
             tmp = resultSplit[1 + numVertex + i].split(" ");
             // get associated vertices
-            GraphVertex v1 = vertices.get(Integer.parseInt(tmp[0]));
-            GraphVertex v2 = vertices.get(Integer.parseInt(tmp[1]));
+            GraphVertex v1 = tmpVertices.get(Integer.parseInt(tmp[0]));
+            GraphVertex v2 = tmpVertices.get(Integer.parseInt(tmp[1]));
             GraphEdge edge = new GraphEdge(v1, v2);
-            edges.add(edge);
+            tmpEdges.add(edge);
+        }
+
+        // remove old vertices
+        // cast to new list to prevent concurrent modification
+        for (GraphVertex v : new ArrayList<>(vertices)) {
+            this.removeVertex(v);
+        }
+
+        // add new vertices
+        vertices.addAll(tmpVertices);
+        edges.addAll(tmpEdges);
+
+        // ensure dragging works
+        for (GraphVertex v : vertices) {
+            v.addObserver(this);
         }
 
         // done

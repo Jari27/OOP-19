@@ -1,15 +1,22 @@
 package graphEditor.views;
 
+import graphEditor.Constants;
 import graphEditor.controllers.actions.AddVertexAction;
+import graphEditor.controllers.actions.ExitProgramAction;
+import graphEditor.controllers.actions.LoadGraphAction;
+import graphEditor.controllers.actions.SaveGraphAction;
 import graphEditor.models.Graph;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.*;
+import java.io.File;
 
 public class GraphFrame extends JFrame {
 
     Graph graph;
     GraphPanel panel;
+    JFileChooser fc;
 
     public GraphFrame() throws HeadlessException {
         init();
@@ -17,11 +24,26 @@ public class GraphFrame extends JFrame {
     }
 
     private void init() {
-        setTitle("My favourite Graph Editor!");
+        setTitle(Constants.NAME);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(1000, 800));
         setResizable(false);
         setVisible(true);
+        fc = new JFileChooser();
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fc.setMultiSelectionEnabled(false);
+        fc.setFileHidingEnabled(true);
+        fc.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                return f.getName().endsWith(Constants.EXTENSION);
+            }
+
+            @Override
+            public String getDescription() {
+                return Constants.DESCRIPTION;
+            }
+        });
         // set panel
         createOrUpdatePanel();
         // set menubar
@@ -55,9 +77,9 @@ public class GraphFrame extends JFrame {
         edit.add(new AddVertexAction(graph));
         edit.add("TODO3");
 
-        file.add("Load");
-        file.add("Save");
-        file.add("Close program");
+        file.add(new LoadGraphAction(graph, this));
+        file.add(new SaveGraphAction(graph, this));
+        file.add(new ExitProgramAction());
         setJMenuBar(menuBar);
 
     }
@@ -70,5 +92,9 @@ public class GraphFrame extends JFrame {
         this.updateInterface();
 
         return this;
+    }
+
+    public JFileChooser getFileChooser() {
+        return fc;
     }
 }

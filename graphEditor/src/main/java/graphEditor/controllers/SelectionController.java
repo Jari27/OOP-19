@@ -35,88 +35,26 @@ public class SelectionController implements MouseListener, MouseMotionListener {
     }
 
     private void startDragging(MouseEvent e) {
-        isDragging = true;
         startX = e.getX();
         startY = e.getY();
         for (GraphVertex vertex : graph.getVertices()) {
             if (vertex.isSelected()) {
+                // these vertices might have to be moved
                 startLocations.put(vertex, vertex.getLocation());
-            }
-        }
-        System.out.println("Start: " + startX + ", " + +startY);
-    }
-
-    private void handleSelection(MouseEvent event) {
-        boolean hitOneOrMore = false;
-        for (GraphVertex vertex : graph.getVertices()) {
-            if (isInside(event, vertex)) {
-                hitOneOrMore = true;
-                if (event.getButton() == MouseEvent.BUTTON1 && event.isControlDown()) {
-                    if (vertex.isSelected()) {
-                        graph.unSelect(vertex);
-                    } else {
-                        graph.select(vertex);
-                    }
-                } else if (event.getButton() == MouseEvent.BUTTON1) {
-                    graph.selectOnly(vertex);
+                if (isInside(e, vertex)) {
+                    // we need to start in a selected vertex for a dragging event
+                    isDragging = true;
                 }
             }
         }
-        if (!hitOneOrMore) {
-            graph.unselectAll();
-        }
     }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-//        handleSelection(e);
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        boolean isPreSelected = false;
-        boolean inside = false;
-        for (GraphVertex vertex : graph.getVertices()) {
-            if (isInside(e, vertex)) {
-                inside = true;
-                if (vertex.isSelected()) {
-                    isPreSelected = true;
-                }
-            }
-        }
-        if (isPreSelected) {
-            startDragging(e);
-        } else if (inside) {
-            handleSelection(e);
-            startDragging(e);
-        } else {
-            handleSelection(e);
-        }
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
+    private void endDragging(MouseEvent e) {
         isDragging = false;
         startLocations.clear();
-        if (e.getX() == startX && e.getY() == startY) {
-            // mouse didnt move so handle selection
-            handleSelection(e);
-        }
     }
 
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
+    private void doDrag(MouseEvent e) {
         if (isDragging) {
             for (GraphVertex vertex : graph.getVertices()) {
                 if (vertex.isSelected()) {
@@ -136,11 +74,67 @@ public class SelectionController implements MouseListener, MouseMotionListener {
                     } else if (newLocation.y + size.height <= DRAG_MARGIN) {
                         newLocation.y = DRAG_MARGIN - size.height;
                     }
-                    System.out.println(newLocation);
                     vertex.setLocation(newLocation);
                 }
             }
         }
+    }
+
+    private void handleSelection(MouseEvent e) {
+        boolean hitOne = false;
+        for (GraphVertex vertex : graph.getVertices()) {
+            if (isInside(e, vertex)) {
+                hitOne = true;
+                if (e.getButton() == MouseEvent.BUTTON1 && !vertex.isSelected()) {
+                    // add vertex to selection
+                    if (e.isControlDown()) {
+                        graph.select(vertex);
+                    } else {
+                        graph.selectOnly(vertex);
+                    }
+                } else if (e.getButton() == MouseEvent.BUTTON1 && vertex.isSelected()) {
+                    // remove vertex from selection
+                    if (e.isControlDown()) {
+                        graph.unSelect(vertex);
+                    } else {
+                        graph.selectOnly(vertex);
+                    }
+                }
+            }
+        }
+        if (!hitOne && e.getButton() == MouseEvent.BUTTON1) {
+            graph.unselectAll();
+        }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        handleSelection(e);
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        startDragging(e);
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        endDragging(e);
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        doDrag(e);
     }
 
     @Override
