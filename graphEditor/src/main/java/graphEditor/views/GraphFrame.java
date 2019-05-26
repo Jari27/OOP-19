@@ -62,18 +62,16 @@ public class GraphFrame extends JFrame {
         menuBar.add(edit);
         edit.add(new AddVertexAction(graph));
         edit.add(new RemoveVertexAction(graph));
+        edit.add(new AddEdgeAction(graph, panel));
 
         file.add(new LoadGraphAction(graph, this));
         file.add(new SaveGraphAction(graph, this));
         file.add(new ExitProgramAction());
-        setJMenuBar(menuBar);
 
+        setJMenuBar(menuBar);
     }
 
     public GraphFrame setGraph(Graph graph) {
-        if (this.graph != null) {
-            this.graph.deleteObservers();
-        }
         this.graph = graph;
         this.updateInterface();
 

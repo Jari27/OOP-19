@@ -53,6 +53,13 @@ public class GraphVertex extends Selectable {
         notifyObservers();
     }
 
+    public boolean isInside(Point p) {
+        return p.x >= getLocation().x
+                && p.x <= getLocation().x + getSize().width
+                && p.y >= getLocation().y
+                && p.y <= getLocation().y + getSize().height;
+    }
+
     public static Point getDefaultLocation() {
         return defaultLocation;
     }

@@ -9,10 +9,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.Line2D;
 import java.util.Observable;
 import java.util.Observer;
 
 public class GraphPanel extends JPanel implements Observer {
+
+    private final Color COLOR_NEW_EDGE = Color.RED;
 
     private final Color COLOR_EDGE_DEFAULT = Color.BLACK;
     private final Color COLOR_FILL_DEFAULT = Color.WHITE;
@@ -21,6 +24,9 @@ public class GraphPanel extends JPanel implements Observer {
     private final Color COLOR_FILL_SELECTED = Color.WHITE;
 
     Graph graph;
+
+    private boolean drawingNewEdge = false;
+    private Line2D newEdge;
 
     public GraphPanel(){
     }
@@ -31,7 +37,7 @@ public class GraphPanel extends JPanel implements Observer {
 
     public GraphPanel setGraph(Graph graph) {
         if (this.graph != null) {
-            graph.deleteObservers();
+            graph.deleteObserver(this);
         }
         this.graph = graph;
         this.graph.addObserver(this);
@@ -57,7 +63,16 @@ public class GraphPanel extends JPanel implements Observer {
             return;
         }
         drawEdges(g);
+        if (drawingNewEdge) {
+            drawNewEdge(g);
+        }
+
         drawVertices(g);
+    }
+
+    private void drawNewEdge(Graphics g) {
+        g.setColor(COLOR_NEW_EDGE);
+        g.drawLine((int) newEdge.getX1(), (int) newEdge.getY1(), (int) newEdge.getX2(), (int) newEdge.getY2());
     }
 
     private void drawEdges(Graphics g) {
@@ -108,8 +123,17 @@ public class GraphPanel extends JPanel implements Observer {
         g.drawString(text, newX, newY);
     }
 
+    public void setDrawingNewEdge(boolean drawingNewEdge) {
+        this.drawingNewEdge = drawingNewEdge;
+    }
+
     @Override
     public void update(Observable o, Object arg) {
+        repaint();
+    }
+
+    public void setNewEdgeLocation(Line2D location) {
+        this.newEdge = location;
         repaint();
     }
 }

@@ -145,6 +145,12 @@ public class Graph extends Observable implements Observer {
     }
 
     public GraphEdge addEdge(GraphVertex v1, GraphVertex v2) {
+        for (GraphEdge e : edges) {
+            if (e.getV1() == v1 && e.getV2() == v2 || e.getV1() == v2 && e.getV2() == v1) {
+                // do nothing
+                return e;
+            }
+        }
         GraphEdge edge = new GraphEdge(v1, v2);
         edges.add(edge);
         setChanged();
@@ -179,7 +185,7 @@ public class Graph extends Observable implements Observer {
 
     public GraphVertex removeVertex(GraphVertex vertex) {
         boolean didRemove = vertices.remove(vertex);
-        vertex.deleteObservers();
+        vertex.deleteObserver(this);
         // O(n^2)
         // can make quicker using LinkedList and ListIterator
         List<GraphEdge> edgesToRemove = new ArrayList<>();

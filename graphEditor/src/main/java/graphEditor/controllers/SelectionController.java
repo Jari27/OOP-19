@@ -27,13 +27,6 @@ public class SelectionController implements MouseListener, MouseMotionListener {
         this.panel = panel;
     }
 
-    private boolean isInside(MouseEvent e, GraphVertex vertex) {
-        return e.getPoint().x >= vertex.getLocation().x
-                && e.getPoint().x <= vertex.getLocation().x + vertex.getSize().width
-                && e.getPoint().y >= vertex.getLocation().y
-                && e.getPoint().y <= vertex.getLocation().y + vertex.getSize().height;
-    }
-
     private void startDragging(MouseEvent e) {
         startX = e.getX();
         startY = e.getY();
@@ -41,7 +34,7 @@ public class SelectionController implements MouseListener, MouseMotionListener {
             if (vertex.isSelected()) {
                 // these vertices might have to be moved
                 startLocations.put(vertex, vertex.getLocation());
-                if (isInside(e, vertex)) {
+                if (vertex.isInside(e.getPoint())) {
                     // we need to start in a selected vertex for a dragging event
                     isDragging = true;
                 }
@@ -83,7 +76,7 @@ public class SelectionController implements MouseListener, MouseMotionListener {
     private void handleSelection(MouseEvent e) {
         boolean hitOne = false;
         for (GraphVertex vertex : graph.getVertices()) {
-            if (isInside(e, vertex)) {
+            if (vertex.isInside(e.getPoint())) {
                 hitOne = true;
                 if (e.getButton() == MouseEvent.BUTTON1 && !vertex.isSelected()) {
                     // add vertex to selection
