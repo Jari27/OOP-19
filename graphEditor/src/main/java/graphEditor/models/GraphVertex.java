@@ -27,33 +27,30 @@ public class GraphVertex extends Selectable {
         return name;
     }
 
-    public GraphVertex setName(String name) {
+    public void setName(String name) {
         this.name = name;
         setChanged();
         notifyObservers();
-        return this;
     }
 
     public Dimension getSize() {
         return size;
     }
 
-    public GraphVertex setSize(Dimension size) {
+    public void setSize(Dimension size) {
         this.size = size;
         setChanged();
         notifyObservers();
-        return this;
     }
 
     public Point getLocation() {
         return location;
     }
 
-    public GraphVertex setLocation(Point location) {
+    public void setLocation(Point location) {
         this.location = location;
         setChanged();
         notifyObservers();
-        return this;
     }
 
     public static Point getDefaultLocation() {
