@@ -1,16 +1,12 @@
 package graphEditor.views;
 
 import graphEditor.Constants;
-import graphEditor.controllers.actions.AddVertexAction;
-import graphEditor.controllers.actions.ExitProgramAction;
-import graphEditor.controllers.actions.LoadGraphAction;
-import graphEditor.controllers.actions.SaveGraphAction;
+import graphEditor.controllers.actions.*;
 import graphEditor.models.Graph;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.io.File;
 
 public class GraphFrame extends JFrame {
 
@@ -33,17 +29,7 @@ public class GraphFrame extends JFrame {
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fc.setMultiSelectionEnabled(false);
         fc.setFileHidingEnabled(true);
-        fc.setFileFilter(new FileFilter() {
-            @Override
-            public boolean accept(File f) {
-                return f.getName().endsWith(Constants.EXTENSION);
-            }
-
-            @Override
-            public String getDescription() {
-                return Constants.DESCRIPTION;
-            }
-        });
+        fc.setFileFilter(new FileNameExtensionFilter(Constants.DESCRIPTION, Constants.EXTENSION));
         // set panel
         createOrUpdatePanel();
         // set menubar
@@ -75,7 +61,7 @@ public class GraphFrame extends JFrame {
         menuBar.add(file);
         menuBar.add(edit);
         edit.add(new AddVertexAction(graph));
-        edit.add("TODO3");
+        edit.add(new RemoveVertexAction(graph));
 
         file.add(new LoadGraphAction(graph, this));
         file.add(new SaveGraphAction(graph, this));
