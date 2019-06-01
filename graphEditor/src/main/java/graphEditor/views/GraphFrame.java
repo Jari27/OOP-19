@@ -21,7 +21,7 @@ public class GraphFrame extends JFrame {
 
     private void init() {
         setTitle(Constants.NAME);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new Dimension(1000, 800));
         setResizable(false);
         setVisible(true);
@@ -67,6 +67,7 @@ public class GraphFrame extends JFrame {
 
         file.add(new LoadGraphAction(graph, this));
         file.add(new SaveGraphAction(graph, this));
+        file.add(new NewFrameAction(graph));
         file.add(new ExitProgramAction());
 
         setJMenuBar(menuBar);
