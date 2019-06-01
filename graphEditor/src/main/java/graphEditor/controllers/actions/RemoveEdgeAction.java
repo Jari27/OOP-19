@@ -24,12 +24,10 @@ public class RemoveEdgeAction extends AbstractAction implements Observer {
     }
 
     private List<GraphEdge> getDeletableEdges() {
-        System.out.println("Investigating..");
         final List<GraphEdge> edges = new ArrayList<>();
         for (GraphEdge edge : graph.getEdges()) {
             if (graph.isSelected(edge) && edge.getV1().isSelected() && edge.getV2().isSelected()) {
                 edges.add(edge);
-                System.out.println("Found deletable edge!");
             }
         }
         return edges;
