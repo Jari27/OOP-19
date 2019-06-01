@@ -63,6 +63,7 @@ public class GraphFrame extends JFrame {
         edit.add(new AddVertexAction(graph));
         edit.add(new RemoveVertexAction(graph));
         edit.add(new AddEdgeAction(graph, panel));
+        edit.add(new RemoveEdgeAction(graph));
 
         file.add(new LoadGraphAction(graph, this));
         file.add(new SaveGraphAction(graph, this));

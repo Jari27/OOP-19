@@ -1,6 +1,6 @@
 package graphEditor.models;
 
-public class GraphEdge extends Selectable {
+public class GraphEdge {
 
     private GraphVertex v1;
     private GraphVertex v2;
@@ -40,5 +40,9 @@ public class GraphEdge extends Selectable {
     public GraphEdge setV2(GraphVertex v2) {
         this.v2 = v2;
         return this;
+    }
+
+    public boolean isSelected(Graph graph){
+        return graph.isSelected(this);
     }
 }

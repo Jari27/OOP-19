@@ -14,7 +14,7 @@ public class RemoveVertexAction extends AbstractAction implements Observer {
     private Graph graph;
 
     public RemoveVertexAction(Graph graph) {
-        super("Remove vertex/vertices");
+        super("Remove vertex(-ices)");
         this.graph = graph;
         if (graph != null) {
             graph.addObserver(this);

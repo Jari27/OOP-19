@@ -10,7 +10,7 @@ public class AddVertexAction extends AbstractAction {
     private Graph graph;
 
     public AddVertexAction(Graph graph) {
-        super("Add a new vertex");
+        super("Add vertex");
         this.graph = graph;
     }
 

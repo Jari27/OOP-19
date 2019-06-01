@@ -22,7 +22,7 @@ public class AddEdgeAction extends AbstractAction implements Observer {
     private GraphPanel panel;
 
     public AddEdgeAction(Graph graph, GraphPanel panel) {
-        super("Add edge");
+        super("Add edge(s)");
         this.graph = graph;
         this.panel = panel;
         if (graph != null) {
