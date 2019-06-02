@@ -1,5 +1,7 @@
 package graphEditor.models;
 
+import javax.swing.undo.UndoManager;
+import javax.swing.undo.UndoableEdit;
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -11,6 +13,8 @@ public class Graph extends Observable implements Observer {
 
     private final List<GraphVertex> vertices = new ArrayList<>();
     private final List<GraphEdge> edges  = new ArrayList<>();
+
+    private final UndoManager undoManager = new UndoManager();
 
     public Graph() {
         GraphVertex v1 = new GraphVertex();
@@ -144,18 +148,36 @@ public class Graph extends Observable implements Observer {
         return builder.toString();
     }
 
-    public GraphEdge addEdge(GraphVertex v1, GraphVertex v2) {
+    public void addEdge(GraphVertex v1, GraphVertex v2) {
         for (GraphEdge e : edges) {
             if (e.getV1() == v1 && e.getV2() == v2 || e.getV1() == v2 && e.getV2() == v1) {
                 // do nothing
-                return e;
+                return;
             }
         }
         GraphEdge edge = new GraphEdge(v1, v2);
+        addEdge(edge);
+    }
+
+    public void addEdge(GraphEdge edge) {
+        // verify that this edge does not exist yet
+        if (hasEdge(edge)) {
+            return;
+        }
         edges.add(edge);
         setChanged();
         notifyObservers();
-        return edge;
+    }
+
+    private boolean hasEdge(GraphEdge edge) {
+        if (edges.contains(edge)) return true;
+        for (GraphEdge e : edges) {
+            if (e.getV1() == edge.getV1() && e.getV2() == edge.getV2()
+                    || e.getV1() == edge.getV2() && e.getV2() == edge.getV1()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public GraphEdge removeEdge(GraphEdge edge) {
@@ -165,22 +187,22 @@ public class Graph extends Observable implements Observer {
         return edge;
     }
 
-    public GraphVertex addVertex() {
+    public void addVertex() {
         GraphVertex vertex = new GraphVertex();
+        addVertex(vertex);
+    }
+
+    public void addVertex(GraphVertex vertex) {
         vertices.add(vertex);
         selectOnly(vertex);
         vertex.addObserver(this);
         setChanged();
         notifyObservers();
-        return vertex;
     }
 
-    public GraphVertex addVertex(String name) {
+    public void addVertex(String name) {
         GraphVertex vertex = new GraphVertex(name);
-        vertices.add(vertex);
-        setChanged();
-        notifyObservers();
-        return vertex;
+        addVertex(vertex);
     }
 
     public GraphVertex removeVertex(GraphVertex vertex) {
@@ -274,5 +296,17 @@ public class Graph extends Observable implements Observer {
     public void update(Observable o, Object arg) {
         setChanged();
         notifyObservers();
+    }
+
+    public void addEdit(UndoableEdit edit) {
+        undoManager.addEdit(edit);
+    }
+
+    public void undo() {
+        undoManager.undo();
+    }
+
+    public void redo() {
+        undoManager.redo();
     }
 }

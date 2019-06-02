@@ -1,11 +1,10 @@
 package graphEditor.controllers.actions;
 
+import graphEditor.controllers.edits.RemoveVertexEdit;
 import graphEditor.models.Graph;
-import graphEditor.models.GraphVertex;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -24,17 +23,7 @@ public class RemoveVertexAction extends AbstractAction implements Observer {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (graph != null) {
-            ArrayList<GraphVertex> tmpList = new ArrayList<>();
-            for (GraphVertex vertex : graph.getVertices()) {
-                if (vertex.isSelected()) {
-                    tmpList.add(vertex);
-                }
-            }
-            for (GraphVertex vertex : tmpList) {
-                graph.removeVertex(vertex);
-            }
-        }
+        RemoveVertexEdit edit = new RemoveVertexEdit(graph);
     }
 
     private void fixEnabled() {
