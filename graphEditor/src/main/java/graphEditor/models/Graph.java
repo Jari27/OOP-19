@@ -12,7 +12,7 @@ import java.util.Observer;
 public class Graph extends Observable implements Observer {
 
     private final List<GraphVertex> vertices = new ArrayList<>();
-    private final List<GraphEdge> edges  = new ArrayList<>();
+    private final List<GraphEdge> edges = new ArrayList<>();
 
     private final UndoManager undoManager = new UndoManager();
 
@@ -148,28 +148,19 @@ public class Graph extends Observable implements Observer {
         return builder.toString();
     }
 
-    public void addEdge(GraphVertex v1, GraphVertex v2) {
-        for (GraphEdge e : edges) {
-            if (e.getV1() == v1 && e.getV2() == v2 || e.getV1() == v2 && e.getV2() == v1) {
-                // do nothing
-                return;
-            }
-        }
+    public GraphEdge addEdge(GraphVertex v1, GraphVertex v2) {
         GraphEdge edge = new GraphEdge(v1, v2);
-        addEdge(edge);
+        return addEdge(edge);
     }
 
-    public void addEdge(GraphEdge edge) {
-        // verify that this edge does not exist yet
-        if (hasEdge(edge)) {
-            return;
-        }
+    public GraphEdge addEdge(GraphEdge edge) {
         edges.add(edge);
         setChanged();
         notifyObservers();
+        return edge;
     }
 
-    private boolean hasEdge(GraphEdge edge) {
+    public boolean hasEdgeBetween(GraphEdge edge) {
         if (edges.contains(edge)) return true;
         for (GraphEdge e : edges) {
             if (e.getV1() == edge.getV1() && e.getV2() == edge.getV2()
@@ -178,6 +169,24 @@ public class Graph extends Observable implements Observer {
             }
         }
         return false;
+    }
+
+    public boolean hasEdgeBetween(GraphVertex v1, GraphVertex v2) {
+        GraphEdge edge = new GraphEdge(v1, v2);
+        return hasEdgeBetween(edge);
+    }
+
+    private GraphEdge getSimilarEdge(GraphEdge edge) {
+        if (edges.contains(edge)) {
+            return edge;
+        }
+        for (GraphEdge e : edges) {
+            if (e.getV1() == edge.getV1() && e.getV2() == edge.getV2()
+                    || e.getV1() == edge.getV2() && e.getV2() == edge.getV1()) {
+                return e;
+            }
+        }
+        return null;
     }
 
     public GraphEdge removeEdge(GraphEdge edge) {
