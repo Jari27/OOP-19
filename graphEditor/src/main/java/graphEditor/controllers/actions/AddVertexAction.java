@@ -1,5 +1,6 @@
 package graphEditor.controllers.actions;
 
+import graphEditor.controllers.edits.AddVertexEdit;
 import graphEditor.models.Graph;
 
 import javax.swing.*;
@@ -21,7 +22,8 @@ public class AddVertexAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        graph.addVertex();
+        AddVertexEdit edit = new AddVertexEdit(graph);
+        graph.addEdit(edit);
     }
 
 }

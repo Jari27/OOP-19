@@ -187,22 +187,18 @@ public class Graph extends Observable implements Observer {
         return edge;
     }
 
-    public void addVertex() {
+    public GraphVertex addVertex() {
         GraphVertex vertex = new GraphVertex();
-        addVertex(vertex);
+        return addVertex(vertex);
     }
 
-    public void addVertex(GraphVertex vertex) {
+    public GraphVertex addVertex(GraphVertex vertex) {
         vertices.add(vertex);
         selectOnly(vertex);
         vertex.addObserver(this);
         setChanged();
         notifyObservers();
-    }
-
-    public void addVertex(String name) {
-        GraphVertex vertex = new GraphVertex(name);
-        addVertex(vertex);
+        return vertex;
     }
 
     public GraphVertex removeVertex(GraphVertex vertex) {
