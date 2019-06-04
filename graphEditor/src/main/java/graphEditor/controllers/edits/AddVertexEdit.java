@@ -19,11 +19,13 @@ public class AddVertexEdit extends AbstractUndoableEdit {
 
     @Override
     public void undo() throws CannotUndoException {
+        super.undo();
         graph.removeVertex(addedVertex);
     }
 
     @Override
     public void redo() throws CannotRedoException {
+        super.redo();
         graph.addVertex(addedVertex);
     }
 }

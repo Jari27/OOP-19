@@ -108,6 +108,9 @@ public class Graph extends Observable implements Observer {
             v.addObserver(this);
         }
 
+        // remove stored undos and redos
+        undoManager.discardAllEdits();
+
         // done
         setChanged();
         notifyObservers();
@@ -305,6 +308,8 @@ public class Graph extends Observable implements Observer {
 
     public void addEdit(UndoableEdit edit) {
         undoManager.addEdit(edit);
+        setChanged();
+        notifyObservers();
     }
 
     public void undo() {
@@ -313,5 +318,13 @@ public class Graph extends Observable implements Observer {
 
     public void redo() {
         undoManager.redo();
+    }
+
+    public boolean canUndo() {
+        return undoManager.canUndo();
+    }
+
+    public boolean canRedo() {
+        return undoManager.canRedo();
     }
 }

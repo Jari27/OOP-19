@@ -1,4 +1,4 @@
-package graphEditor.controllers.actions;
+package graphEditor.controllers.actions.file;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

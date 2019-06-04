@@ -43,6 +43,7 @@ public class RemoveVertexEdit extends AbstractUndoableEdit {
 
     @Override
     public void undo() throws CannotUndoException {
+        super.undo();
         for (GraphVertex vertex : removedVertices) {
             graph.addVertex(vertex);
         }
@@ -53,6 +54,7 @@ public class RemoveVertexEdit extends AbstractUndoableEdit {
 
     @Override
     public void redo() throws CannotRedoException {
+        super.redo();
         for (GraphVertex vertex : removedVertices) {
             graph.removeVertex(vertex);
         }

@@ -1,4 +1,4 @@
-package graphEditor.controllers.actions;
+package graphEditor.controllers.actions.edit;
 
 import graphEditor.controllers.edits.RemoveVertexEdit;
 import graphEditor.models.Graph;

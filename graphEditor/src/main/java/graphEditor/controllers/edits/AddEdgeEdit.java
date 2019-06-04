@@ -56,18 +56,14 @@ public class AddEdgeEdit extends AbstractUndoableEdit {
 
     @Override
     public void undo() throws CannotUndoException {
+        super.undo();
         addedEdges.forEach((edge) -> graph.removeEdge(edge));
-//        for (GraphEdge addedEdge : addedEdges) {
-//            graph.removeEdge(addedEdge);
-//        }
     }
 
     @Override
     public void redo() throws CannotRedoException {
+        super.redo();
         addedEdges.forEach((edge) -> graph.addEdge(edge));
-//        for (GraphEdge addedEdge : addedEdges) {
-//            graph.addEdge(addedEdge);
-//        }
     }
 
     // temporary mouse listener for drawing new edge

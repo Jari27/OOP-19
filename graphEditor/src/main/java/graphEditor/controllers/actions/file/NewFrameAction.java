@@ -1,4 +1,4 @@
-package graphEditor.controllers.actions;
+package graphEditor.controllers.actions.file;
 
 import graphEditor.models.Graph;
 import graphEditor.views.GraphFrame;

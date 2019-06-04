@@ -1,4 +1,4 @@
-package graphEditor.controllers.actions;
+package graphEditor.controllers.actions.file;
 
 import graphEditor.Constants;
 import graphEditor.models.Graph;
@@ -8,14 +8,14 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-public class SaveGraphAction extends AbstractAction{
+public class LoadGraphAction extends AbstractAction {
 
     private Graph graph;
     private GraphFrame parent;
     private JFileChooser fileChooser = null;
 
-    public SaveGraphAction(Graph graph, GraphFrame parent) {
-        super("Save");
+    public LoadGraphAction(Graph graph, GraphFrame parent) {
+        super("Load");
         this.parent = parent;
         this.graph = graph;
     }
@@ -29,14 +29,20 @@ public class SaveGraphAction extends AbstractAction{
         if (fileChooser == null) {
             fileChooser = parent.getFileChooser();
         }
-        int result = fileChooser.showSaveDialog(parent);
+        int result = fileChooser.showOpenDialog(parent);
 
         if (result == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
-            if (!file.getName().endsWith(Constants.EXTENSION)) {
-                file = new File(file.getAbsoluteFile() + Constants.EXTENSION);
+            if (!file.getName().endsWith("." + Constants.EXTENSION)) {
+                System.out.println("Probably an invalid file but whatever.");
             }
-            graph.save(file);
+            try {
+                graph.load(file);
+            } catch (Exception exc) {
+                System.out.println("We encountered an error trying to load your file. " +
+                        "Are you sure this is the correct format?");
+                exc.printStackTrace();
+            }
         }
     }
 }
