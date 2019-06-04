@@ -1,5 +1,6 @@
 package graphEditor.controllers.actions;
 
+import graphEditor.controllers.edits.RemoveEdgeEdit;
 import graphEditor.models.Graph;
 import graphEditor.models.GraphEdge;
 
@@ -43,9 +44,8 @@ public class RemoveEdgeAction extends AbstractAction implements Observer {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        for (GraphEdge edge : getDeletableEdges()) {
-            graph.removeEdge(edge);
-        }
+        RemoveEdgeEdit edit = new RemoveEdgeEdit(graph, getDeletableEdges());
+        graph.addEdit(edit);
     }
 
     @Override
