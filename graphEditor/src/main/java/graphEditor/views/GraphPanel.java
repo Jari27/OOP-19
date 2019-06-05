@@ -27,16 +27,38 @@ public class GraphPanel extends JPanel implements Observer {
     private final Color COLOR_TEXT_SELECTED = Color.BLACK;
     private final Color COLOR_EDGE_SELECTED = Color.BLUE;
 
+    private final int DEFAULT_LINE_WIDTH = 2; //px
+
     Graph graph;
 
     private boolean drawingNewEdge = false;
     private Line2D newEdge;
+    private final JTextField vertexNamer = new JTextField(15);
 
     public GraphPanel(){
+        createVertexNamer();
+        this.setLayout(null);
     }
 
     public GraphPanel(Graph graph) {
         this.setGraph(graph);
+        this.setLayout(null);
+        createVertexNamer();
+    }
+
+    private void createVertexNamer() {
+
+        vertexNamer.setHorizontalAlignment(JTextField.CENTER);
+        vertexNamer.setVisible(false);
+        vertexNamer.setEditable(true);
+        vertexNamer.getCaret().setSelectionVisible(true);
+        vertexNamer.getCaret().setVisible(true);
+//        vertexNamer.setOpaque(true);
+//        vertexNamer.setRequestFocusEnabled(true);
+        vertexNamer.setBorder(null);
+//        vertexNamer.setBackground(Color.GREEN);
+        this.add(vertexNamer);
+        this.validate();
     }
 
     public GraphPanel setGraph(Graph graph) {
@@ -56,23 +78,10 @@ public class GraphPanel extends JPanel implements Observer {
         SelectionController controller = new SelectionController(graph, this);
         this.addMouseListener(controller);
         this.addMouseMotionListener(controller);
+
         return this;
     }
 
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        if (graph == null) {
-            return;
-        }
-        drawEdges(g);
-        if (drawingNewEdge) {
-            drawNewEdge(g);
-        }
-
-        drawVertices(g);
-    }
 
     private void drawNewEdge(Graphics g) {
         g.setColor(COLOR_NEW_EDGE);
@@ -99,7 +108,8 @@ public class GraphPanel extends JPanel implements Observer {
     }
 
     private void drawVertices(Graphics g) {
-        for (GraphVertex vertex : graph.getVertices()) {
+        for (int i = graph.getVertices().size() - 1; i >= 0; i--) {
+            GraphVertex vertex = graph.getVertices().get(i);
             int x = vertex.getLocation().x;
             int y = vertex.getLocation().y;
             int width = vertex.getSize().width;
@@ -127,6 +137,16 @@ public class GraphPanel extends JPanel implements Observer {
 
     private void drawCenteredString(int x, int y, int width, int height, String text, Graphics g) {
         FontMetrics fm = g.getFontMetrics();
+        // ensure we dont pass boundaries
+        boolean removed = false;
+        while (fm.stringWidth(text) > width) {
+            removed = true;
+            text = text.substring(0, text.length() - 1);
+        }
+        if (removed) {
+            text = text.substring(0, text.length() - 3) + "...";
+        }
+        // calculate location and draw
         int newX = x + (width - fm.stringWidth(text)) / 2;
         int newY = y + (height - fm.getHeight()) / 2 + fm.getAscent();
         g.drawString(text, newX, newY);
@@ -136,13 +156,33 @@ public class GraphPanel extends JPanel implements Observer {
         this.drawingNewEdge = drawingNewEdge;
     }
 
+    public void setNewEdgeLocation(Line2D location) {
+        this.newEdge = location;
+        repaint();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        // set line thickness
+        ((Graphics2D) g).setStroke(new BasicStroke(DEFAULT_LINE_WIDTH));
+        if (graph == null) {
+            return;
+        }
+        drawEdges(g);
+        if (drawingNewEdge) {
+            drawNewEdge(g);
+        }
+
+        drawVertices(g);
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         repaint();
     }
 
-    public void setNewEdgeLocation(Line2D location) {
-        this.newEdge = location;
-        repaint();
+    public JTextField getVertexNamer() {
+        return vertexNamer;
     }
 }

@@ -4,14 +4,12 @@ import javax.swing.undo.UndoManager;
 import javax.swing.undo.UndoableEdit;
 import java.awt.*;
 import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 public class Graph extends Observable implements Observer {
 
-    private final List<GraphVertex> vertices = new ArrayList<>();
+    private final List<GraphVertex> vertices = new LinkedList<>(); // better performance for keeping the last selected vertex in front
     private final List<GraphEdge> edges = new ArrayList<>();
 
     private final UndoManager undoManager = new UndoManager();
@@ -245,6 +243,8 @@ public class Graph extends Observable implements Observer {
     public void select(GraphVertex... vertices) {
         for (GraphVertex vertex : vertices) {
             vertex.setSelected(true);
+            getVertices().remove(vertex);
+            getVertices().add(0, vertex);
         }
         setChanged();
         notifyObservers();
@@ -252,11 +252,7 @@ public class Graph extends Observable implements Observer {
 
     public void selectOnly(GraphVertex... vertices) {
         unselectAll();
-        for (GraphVertex vertex : vertices) {
-            vertex.setSelected(true);
-        }
-        setChanged();
-        notifyObservers();
+        select(vertices);
     }
 
     public void selectAll() {
@@ -270,6 +266,8 @@ public class Graph extends Observable implements Observer {
     public void unSelect(GraphVertex... vertices) {
         for (GraphVertex vertex : vertices) {
             vertex.setSelected(false);
+            getVertices().remove(vertex);
+            getVertices().add(0, vertex);
         }
         setChanged();
         notifyObservers();

@@ -4,8 +4,8 @@ import java.awt.*;
 
 public class GraphVertex extends Selectable {
 
-    private static Point defaultLocation = new Point(0, 0);
-    private static Dimension defaultSize = new Dimension(80, 30);
+    private static Point defaultLocation = new Point(10, 10);
+    private static Dimension defaultSize = new Dimension(80, 80);
     private static int num = 0;
 
     private Dimension size;
