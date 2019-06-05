@@ -6,10 +6,10 @@ import graphEditor.models.GraphEdge;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.stream.Collectors;
 
 public class RemoveEdgeAction extends AbstractAction implements Observer {
 
@@ -25,13 +25,9 @@ public class RemoveEdgeAction extends AbstractAction implements Observer {
     }
 
     private List<GraphEdge> getDeletableEdges() {
-        final List<GraphEdge> edges = new ArrayList<>();
-        for (GraphEdge edge : graph.getEdges()) {
-            if (graph.isSelected(edge) && edge.getV1().isSelected() && edge.getV2().isSelected()) {
-                edges.add(edge);
-            }
-        }
-        return edges;
+        return graph.getEdges().stream()
+                .filter(edge -> graph.isSelected(edge) && edge.getV1().isSelected() && edge.getV2().isSelected())
+                .collect(Collectors.toList());
     }
 
     private void fixEnabled() {

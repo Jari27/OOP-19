@@ -15,6 +15,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AddEdgeEdit extends AbstractUndoableEdit {
 
@@ -25,12 +26,10 @@ public class AddEdgeEdit extends AbstractUndoableEdit {
     public AddEdgeEdit(Graph graph, GraphPanel panel) {
         this.graph = graph;
         this.panel = panel;
-        List<GraphVertex> selectedVertices = new ArrayList<>();
-        for (GraphVertex vertex : graph.getVertices()) {
-            if (vertex.isSelected()) {
-                selectedVertices.add(vertex);
-            }
-        }
+        List<GraphVertex> selectedVertices = graph.getVertices().stream()
+                .filter(vertex -> vertex.isSelected())
+                .collect(Collectors.toList());
+
         if (selectedVertices.size() > 1) {
             for (int i = 0; i < selectedVertices.size(); i++) {
                 for (int j = i; j < selectedVertices.size(); j++) {
