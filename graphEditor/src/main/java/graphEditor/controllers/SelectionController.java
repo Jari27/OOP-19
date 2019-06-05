@@ -21,6 +21,7 @@ public class SelectionController implements MouseListener, MouseMotionListener {
     private int startX;
     private int startY;
     private boolean isDragging = false;
+    private boolean ignoreNextSelection = false; // ensures release and click dont trigger select + deselect
 
     public SelectionController(Graph graph, GraphPanel panel) {
         this.graph = graph;
@@ -102,11 +103,19 @@ public class SelectionController implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+         if (ignoreNextSelection) {
+            ignoreNextSelection = false;
+            return;
+        }
         handleSelection(e);
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
+        if(graph.getVertices().stream().filter(graphVertex -> graphVertex.isSelected()).count() <= 1) {
+            handleSelection(e);
+            ignoreNextSelection = true;
+        }
         startDragging(e);
     }
 
