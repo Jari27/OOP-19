@@ -17,11 +17,15 @@ public class GraphPanel extends JPanel implements Observer {
 
     private final Color COLOR_NEW_EDGE = Color.RED;
 
+    private final Color COLOR_VERTEX_EDGE_DEFAULT = Color.BLACK;
+    private final Color COLOR_VERTEX_FILL_DEFAULT = Color.WHITE;
     private final Color COLOR_EDGE_DEFAULT = Color.BLACK;
-    private final Color COLOR_FILL_DEFAULT = Color.WHITE;
+    private final Color COLOR_TEXT_DEFAULT = Color.BLACK;
 
+    private final Color COLOR_VERTEX_EDGE_SELECTED = Color.BLUE;
+    private final Color COLOR_VERTEX_FILL_SELECTED = Color.CYAN;
+    private final Color COLOR_TEXT_SELECTED = Color.BLACK;
     private final Color COLOR_EDGE_SELECTED = Color.BLUE;
-    private final Color COLOR_FILL_SELECTED = Color.WHITE;
 
     Graph graph;
 
@@ -101,17 +105,22 @@ public class GraphPanel extends JPanel implements Observer {
             int width = vertex.getSize().width;
             int height = vertex.getSize().height;
             if (vertex.isSelected()) {
-                g.setColor(COLOR_FILL_SELECTED);
+                g.setColor(COLOR_VERTEX_FILL_SELECTED);
             } else {
-                g.setColor(COLOR_FILL_DEFAULT);
+                g.setColor(COLOR_VERTEX_FILL_DEFAULT);
             }
             g.fillRect(x, y, width, height);
             if (vertex.isSelected()) {
-                g.setColor(COLOR_EDGE_SELECTED);
+                g.setColor(COLOR_VERTEX_EDGE_SELECTED);
             } else {
-                g.setColor(COLOR_EDGE_DEFAULT);
+                g.setColor(COLOR_VERTEX_EDGE_DEFAULT);
             }
             g.drawRect(x, y, width, height);
+            if (vertex.isSelected()) {
+                g.setColor(COLOR_TEXT_SELECTED);
+            } else {
+                g.setColor(COLOR_TEXT_DEFAULT);
+            }
             drawCenteredString(x, y, width, height, vertex.getName(), g);
         }
     }
